@@ -1,0 +1,92 @@
+
+
+.main-body {
+    padding-top: 20px;
+    max-width: 1248px;
+    margin: 0 auto;
+
+    mat-form-field {
+        width: 100%;
+
+
+    }
+
+}
+
+.ddn {
+    white-space: nowrap;
+}
+
+.ral {
+    white-space: nowrap;
+}
+
+.ng-container {
+    white-space: nowrap;
+
+}
+
+.online {
+
+    width: 100px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+mat-toolbar {
+  display: flex;
+  align-items: center; /* Allinea verticalmente */
+  justify-content: center; /* Centra tutto il contenuto orizzontalmente */
+  gap: 20px; /* Aggiunge spazio tra gli elementi */
+}
+
+span {
+  position: absolute; /* Mantiene il titolo fisso a sinistra */
+  left: 16px;
+}
+
+nav {
+  display: flex;
+  justify-content: center; /* Centra i bottoni */
+  flex-grow: 1; /* Permette a `nav` di occupare tutto lo spazio disponibile */
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  gap: 20px; 
+  padding: 0;
+  margin: 0;
+}
+  
+li {
+  display: flex;
+}
+
+  
+  nav a {
+    background-color: rgba(141, 195, 239, 0.2);
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 5%;
+    margin-right: 200;
+    
+  }
+  
+  nav a:hover {
+    background: darkcyan;  
+  }
+  
+  
+
+
+  nav a.active-link {
+    background-color: darkcyan;  
+    color: white; /* Colore del testo bianco */
+    font-weight: bold; /* Grassetto */
+  }
+
+
+  

@@ -1,0 +1,54 @@
+<div class="main-body">
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <!-- Codice Ufficio Column -->
+      <ng-container matColumnDef="codUff">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Codice Ufficio </th>
+        <td mat-cell *matCellDef="let row"> {{ row.codUff }} </td>
+      </ng-container>
+
+      <!-- Nome Ufficio Column -->
+      <ng-container matColumnDef="nomeUff">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome Ufficio </th>
+        <td mat-cell *matCellDef="let row"> {{ row.nomeUff }} </td>
+      </ng-container>
+
+      <!-- sede Column -->
+      <ng-container matColumnDef="sede">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sede </th>
+        <td mat-cell *matCellDef="let row"> {{ row.sede }} </td>
+      </ng-container>
+
+      <!-- indirizzo Column -->
+      <ng-container matColumnDef="indirizzo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Indirizzo </th>
+        <td mat-cell *matCellDef="let row"> {{ row.indirizzo }} </td>
+      </ng-container>
+
+      <!-- numDipendenti Column -->
+      <ng-container matColumnDef="numDipendenti">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> N. Dipendenti </th>
+        <td mat-cell *matCellDef="let row"> {{ row.numDipendenti }} </td>
+      </ng-container>
+
+      <!-- colonna laterale con bottoni  -->
+  
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Associa Dipendente</th>
+        <td mat-cell *matCellDef="let row" class="online">
+        
+          <button mat-icon-button color="primary">
+            <mat-icon>add</mat-icon>
+
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Header e righe della tabella -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.main-body {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .table-container {
+    width: 80%;
+  }
+  
+  table {
+    width: 100%;
+  }
+  

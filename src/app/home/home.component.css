@@ -1,0 +1,38 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;  
+  height: 100vh;  
+  width: 100vw;
+}
+
+.title{
+  position: absolute;
+  top: 20%;  /* Porta il titolo al centro verticale */
+  left: 50%; /* Porta il titolo al centro orizzontale */
+  transform: translate(-50%, -50%); /* Corregge la posizione esattamente al centro */
+  text-align: center;
+  font-size: 2rem;
+  color: rgb(18, 7, 56);
+  background-color: rgba(108, 203, 237, 0.5); /* Sfondo trasparente per leggibilità */
+  padding: 10px 20px;
+  border-radius: 10px;
+
+  
+}
+
+
+
+.home-container {
+  background: url('https://img.freepik.com/vettori-gratuito/illustrazione-di-concetto-di-processo-di-progettazione_114360-529.jpg?t=st=1739957925~exp=1739961525~hmac=37e62fde0dd8be4f13de4670e0b86a234fc5a483715b74be1cda662c3b18bcf4&w=740') no-repeat center center;
+  background-position: center center; 
+  display: flex;
+  background-size: contain;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+  
+}

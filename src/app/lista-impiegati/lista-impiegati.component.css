@@ -1,0 +1,8 @@
+.divbutton{
+    display: flex;
+    justify-content: right;  
+    align-items: center;    
+    margin-right: 50px;
+    padding-top: 10px;
+   
+}
