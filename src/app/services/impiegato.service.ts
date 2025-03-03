@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class ImpiegatoService {
-  private apiUrl = 'http://localhost:3000/impiegato'; // URL del backend
+  private apiUrl = 'http://localhost:3000/impiegato';
+  private ufficioUrl = 'http://localhost:3000/ufficio';
 
   constructor(private _http: HttpClient) { }
 
@@ -15,7 +17,7 @@ export class ImpiegatoService {
   // Aggiungi un nuovo impiegato
   addImpiegato(data: any): Observable<any> {
 
-    
+
     return this._http.post(`${this.apiUrl}`, data);
   }
 
@@ -39,11 +41,21 @@ export class ImpiegatoService {
 
   }
 
+  //ottieni la lista dinamica degli uffici
+  getMenuUffici(): Observable<any> {
+    return this._http.get(`${this.ufficioUrl}`).pipe(
+      tap(data => console.log("Dati ricevuti dal server:", data))
+    );
 
 
-
-
-
-
-
+  }
 }
+
+
+
+
+
+
+
+
+

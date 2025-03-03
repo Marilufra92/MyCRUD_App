@@ -70,6 +70,8 @@ import { HomeComponent } from './home/home.component';
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
+    
+    
   ],
   bootstrap: [AppComponent]
 })

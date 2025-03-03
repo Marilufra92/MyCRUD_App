@@ -4,6 +4,7 @@ import { ImpiegatoService } from '../services/impiegato.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../core/core.service';
 
+
 @Component({
   selector: 'app-agg-mod-imp',
   standalone: false,
@@ -21,14 +22,14 @@ export class AggModImpComponent implements OnInit {
     'Laurea Magistrale',
     'Dottorato',
   ];
-  ufficio: string[] = ['1 HR', '2 IT', '3 MKT'];
+  ufficio: any[] = [];
 
   constructor(
     private _fb: FormBuilder,
     private _impiegatoService: ImpiegatoService,
     private _dialogRef: MatDialogRef<AggModImpComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _coreService: CoreService
+    private _coreService: CoreService,
   ) {
     this.impForm = this._fb.group({
       id: 0,
@@ -41,8 +42,10 @@ export class AggModImpComponent implements OnInit {
       azienda: '',
       esperienza: '',
       ral: 0,
-      codUff: 0
+      codUff: 0  //  Variabile per memorizzare gli uffici
     });
+
+
   }
 
   ngOnInit(): void {
@@ -54,6 +57,15 @@ export class AggModImpComponent implements OnInit {
         datadinascita: parsedDate
       });
     }
+
+    // Recupera la lista degli uffici dal servizio e popola il menu a tendina
+    this._impiegatoService.getMenuUffici().subscribe({
+      next: (res) => {
+        console.log("Uffici ricevuti:", res);  // Debug
+        this.ufficio = Array.isArray(res.data) ? res.data : [];  // Popola il menu a tendina
+      },
+      error: (err) => console.error("Errore nel recupero degli uffici:", err)
+    });
   }
 
   getListaImpiegati() {
@@ -64,7 +76,7 @@ export class AggModImpComponent implements OnInit {
 
   //  Funzione per correggere la data PRIMA di inviarla al backend
   correctDateForBackend(date: any): string {
-    if (!date) return ''; 
+    if (!date) return '';
     const parsedDate = new Date(date);
 
     if (isNaN(parsedDate.getTime())) {
@@ -72,7 +84,7 @@ export class AggModImpComponent implements OnInit {
       return '';
     }
 
-    parsedDate.setMinutes(parsedDate.getMinutes() - parsedDate.getTimezoneOffset()); 
+    parsedDate.setMinutes(parsedDate.getMinutes() - parsedDate.getTimezoneOffset());
     return parsedDate.toISOString().split('T')[0]; // Restituisce solo YYYY-MM-DD
   }
 

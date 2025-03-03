@@ -75,9 +75,8 @@
 
         <mat-form-field appearance="outline">
             <mat-label>Ufficio</mat-label>
-            <mat-select formControlName="codUff">
-                <mat-option *ngFor="let uff of ufficio" [value]="uff">{{uff}}
-
+            <mat-select formControlName="codUff" id="ufficio" placeholder="Seleziona Ufficio">
+                <mat-option *ngFor="let uff of ufficio" [value]="uff.codUff"> {{ uff.codUff }} - {{ uff.nomeUff }}
                 </mat-option>
 
             </mat-select>
