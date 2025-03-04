@@ -6,3 +6,79 @@
     padding-top: 10px;
    
 }
+
+
+mat-sidenav {
+    background-color: #b3e0ff;  
+    color: #333;                
+  }
+  
+  
+  mat-nav-list {
+    background-color: #b3e0ff;  
+     
+
+  }
+
+
+  mat-nav-list mat-list-item {
+   
+    border-radius: 10px;
+    border: 1px solid #333;
+    padding-top: 20px; 
+    padding-bottom: 20px;
+  }
+  
+
+  mat-nav-list mat-list-item.selected {
+    background-color: rgb(31, 213, 195);    /* Colore per la voce selezionata */
+    color: hsl(0, 33%, 95%);  
+  }
+  
+  
+  mat-nav-list mat-list-item {
+    background-color: transparent; /* Nessun colore per le voci non selezionate */
+    color: #333;  
+    margin-bottom: 5px;
+
+  }
+  
+  mat-nav-list mat-list-item:hover {
+    background-color: #b3ffdd; /* verdino chiaro al passaggio del mouse */
+    color: #333;
+   
+  }
+
+
+  mat-table {
+    width: 100%;
+    margin-top: 20px;
+    background: white;
+    border-radius: 8px;
+  }
+  
+  mat-header-row {
+    background: #1976d2;
+    color: white;
+    font-weight: bold;
+  }
+  
+  mat-row:hover {
+    background: #f5f5f5;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .mat-elevation-z8 {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+   
+  
+   
+   
+   
+   

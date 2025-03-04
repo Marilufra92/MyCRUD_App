@@ -14,7 +14,7 @@ export class ImpiegatoService {
   constructor(private _http: HttpClient) { }
 
 
-  // Aggiungi un nuovo impiegato
+  // aggiungi un nuovo impiegato
   addImpiegato(data: any): Observable<any> {
 
 
@@ -26,7 +26,7 @@ export class ImpiegatoService {
     return this._http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  // Ottieni la lista di tutti gli impiegati
+  // ottieni la lista di tutti gli impiegati
   getListaImpiegati(): Observable<any> {
     return this._http.get(`${this.apiUrl}`).pipe(
       tap(data => console.log("Dati ricevuti dal server:", data)) //  Logga i dati ricevuti
@@ -49,6 +49,13 @@ export class ImpiegatoService {
 
 
   }
+
+    // ottieni la lista della relazione impiegato-sede (risultato della query)
+   /* getImpiegatiSedi(): Observable<any> {
+    return this._http.get(`${this.apiUrl}/impiegati-sedi`).pipe(
+        tap(data => console.log('Dati ricevuti dal server:', data))
+    );
+} */
 }
 
 

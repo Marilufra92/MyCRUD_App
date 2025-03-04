@@ -15,6 +15,9 @@ import { AggModImpComponent } from '../agg-mod-imp/agg-mod-imp.component';
 })
 export class ListaImpiegatiComponent implements OnInit {
 
+  currentView: string = 'impiegati';
+
+  // tabella-colonne VIEW 1
   displayedColumns: string[] = [
     'id',
     'nome',
@@ -31,8 +34,20 @@ export class ListaImpiegatiComponent implements OnInit {
   ];
   dataSource!: MatTableDataSource<any>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+    
+
+  // tabella-colonne VIEW 2    RELAZIONE IMPIEGATO-SEDI
+  displayedColumnsView2: string[] = [
+  'id',
+  'nome',
+  'cognome',
+  'sede'
+];
+dataSourceView2!: MatTableDataSource<any>;
+
+@ViewChild(MatPaginator) paginator!: MatPaginator;
+@ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(
     private _dialog: MatDialog,
@@ -43,6 +58,7 @@ export class ListaImpiegatiComponent implements OnInit {
   ngOnInit(): void {
     this.getListaImpiegati();
   }
+
 
   openAggModImpForm() {
     const dialogRef = this._dialog.open(AggModImpComponent);
@@ -99,28 +115,16 @@ export class ListaImpiegatiComponent implements OnInit {
   eliminaImpiegato(id: number) {
     this._impService.eliminaImpiegato(id).subscribe({
       next: (res) => {
-
-        this._coreService.openSnackBar('impiegato eliminato!', 'OK');
+        this._coreService.openSnackBar('Impiegato eliminato!', 'OK');
         this.getListaImpiegati();
-
-
       },
       error: console.log,
-
-
-
     });
-
-
-
   }
 
   apriModForm(data: any) {
     const dialogRef = this._dialog.open(AggModImpComponent, {
-
       data,
-
-
     });
 
     dialogRef.afterClosed().subscribe({
@@ -130,8 +134,39 @@ export class ListaImpiegatiComponent implements OnInit {
         }
       },
     });
-
   }
 
- 
+  // cambia vista tra "impiegati" e "uffici"
+  setView(view: string) {
+    this.currentView = view;
+    if (view === 'impiegati-sedi') {
+      this.getRelazioneImpiegatoSede();
+    } else {
+      this.getListaImpiegati();
+    }
+  }
+  getRelazioneImpiegatoSede() {
+    throw new Error('Method not implemented.');
+  }
+
+  /* // ottiene i dati della relazione impiegato-sede
+  getRelazioneImpiegatoSede() {
+    this._impService.getImpiegatiSedi().subscribe({
+      next: (res) => {
+        console.log("Dati ricevuti per impiegati-sedi:", res);
+
+        if (res && Array.isArray(res.data)) {
+          this.dataSourceView2 = new MatTableDataSource(res.data);
+        } else {
+          console.error("Errore: i dati ricevuti non sono un array", res);
+        }
+      },
+      error: (err) => {
+        console.error("Errore nel recupero della relazione impiegato-sede:", err);
+      }
+    });
+  }*/
+
+  
 }
+
