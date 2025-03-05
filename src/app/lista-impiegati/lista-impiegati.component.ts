@@ -145,13 +145,10 @@ dataSourceView2!: MatTableDataSource<any>;
       this.getListaImpiegati();
     }
   }
-  getRelazioneImpiegatoSede() {
-    throw new Error('Method not implemented.');
-  }
 
-  /* // ottiene i dati della relazione impiegato-sede
+  // ottiene i dati della relazione impiegato-sede
   getRelazioneImpiegatoSede() {
-    this._impService.getImpiegatiSedi().subscribe({
+    this._impService.getListaImpiegati().subscribe({
       next: (res) => {
         console.log("Dati ricevuti per impiegati-sedi:", res);
 
@@ -165,7 +162,7 @@ dataSourceView2!: MatTableDataSource<any>;
         console.error("Errore nel recupero della relazione impiegato-sede:", err);
       }
     });
-  }*/
+  }
 
   
 }

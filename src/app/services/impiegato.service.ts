@@ -51,11 +51,11 @@ export class ImpiegatoService {
   }
 
     // ottieni la lista della relazione impiegato-sede (risultato della query)
-   /* getImpiegatiSedi(): Observable<any> {
+   getImpiegatiSedi(): Observable<any> {
     return this._http.get(`${this.apiUrl}/impiegati-sedi`).pipe(
         tap(data => console.log('Dati ricevuti dal server:', data))
     );
-} */
+} 
 }
 
 

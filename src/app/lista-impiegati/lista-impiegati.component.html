@@ -132,41 +132,55 @@
       </div>
     </div>
 
-    <!-- VIEW 2: Relazione Impiegato - Sede -->
     <div *ngSwitchCase="'impiegati-sedi'">
-      <h2>Relazione Impiegato - Sede</h2>
-      <mat-table *ngIf="dataSource.data.length > 0" [dataSource]="dataSource" matSort class="mat-elevation-z8">
-      
-      <!-- Colonna ID dalla tabella impiegato -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID Impiegato </th>
-        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-      </ng-container>
 
-      <!-- Colonna Nome dalla tabella impiegato -->
-      <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
-        <td mat-cell *matCellDef="let row"> {{row.nome}} </td>
-      </ng-container>
-
-      <!-- Colonna cognome dalla tabella impiegato -->
-      <ng-container matColumnDef="cognome">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cognome </th>
-        <td mat-cell *matCellDef="let row"> {{row.cognome}} </td>
-      </ng-container>
-
-      <!-- Colonna Sede dalla tabella ufficio-->
-      <ng-container matColumnDef="sede">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sede </th>
-        <td mat-cell *matCellDef="let row"> {{row.sede}} </td>
-      </ng-container>
-
-
-      <mat-header-row *matHeaderRowDef="displayedColumnsView2"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumnsView2;"></mat-row>
-      </mat-table>
+      <div class="main-body">
+        <mat-form-field>
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. pippo" #input>
+        </mat-form-field>
+    
+        <div class="table-container">
+          <mat-table *ngIf="dataSource.data.length > 0" [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    
+            <!-- ID Impiegato -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> ID Impiegato </th>
+              <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+            </ng-container>
+    
+            <!-- Nome -->
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+              <td mat-cell *matCellDef="let row"> {{row.nome}} </td>
+            </ng-container>
+    
+            <!-- Cognome -->
+            <ng-container matColumnDef="cognome">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Cognome </th>
+              <td mat-cell *matCellDef="let row"> {{row.cognome}} </td>
+            </ng-container>
+    
+            <!-- Sede -->
+            <ng-container matColumnDef="sede">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Sede </th>
+              <td mat-cell *matCellDef="let row"> {{row.sede}} </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsView2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsView2;"></tr>
+    
+            <!-- Nessun dato trovato -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </mat-table>
+    
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        </div>
+      </div>
+    
     </div>
-
   </ng-container>
 </mat-sidenav-content>
 
