@@ -140,20 +140,22 @@ dataSourceView2!: MatTableDataSource<any>;
   setView(view: string) {
     this.currentView = view;
     if (view === 'impiegati-sedi') {
-      this.getRelazioneImpiegatoSede();
+      this.getRelazioneImpiegatoSede(); // Ottieni i dati della relazione impiegato-sede
     } else {
-      this.getListaImpiegati();
+      this.getListaImpiegati(); // Torna alla lista impiegati
     }
   }
 
   // ottiene i dati della relazione impiegato-sede
   getRelazioneImpiegatoSede() {
-    this._impService.getListaImpiegati().subscribe({
+    this._impService.getImpiegatiSedi().subscribe({
       next: (res) => {
         console.log("Dati ricevuti per impiegati-sedi:", res);
 
         if (res && Array.isArray(res.data)) {
-          this.dataSourceView2 = new MatTableDataSource(res.data);
+          this.dataSourceView2 = new MatTableDataSource(res.data); // Assegna i dati alla seconda tabella
+          this.dataSourceView2.sort = this.sort;
+          this.dataSourceView2.paginator = this.paginator;
         } else {
           console.error("Errore: i dati ricevuti non sono un array", res);
         }
@@ -163,7 +165,9 @@ dataSourceView2!: MatTableDataSource<any>;
       }
     });
   }
+}
+  
 
   
-}
+
 

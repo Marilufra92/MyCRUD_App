@@ -132,6 +132,8 @@
       </div>
     </div>
 
+    <!-- VIEW 2: Relazione Impiegato-Sede -->
+
     <div *ngSwitchCase="'impiegati-sedi'">
 
       <div class="main-body">
@@ -141,7 +143,7 @@
         </mat-form-field>
     
         <div class="table-container">
-          <mat-table *ngIf="dataSource.data.length > 0" [dataSource]="dataSource" matSort class="mat-elevation-z8">
+          <mat-table *ngIf="dataSourceView2.data.length > 0" [dataSource]="dataSourceView2" matSort class="mat-elevation-z8">
     
             <!-- ID Impiegato -->
             <ng-container matColumnDef="id">

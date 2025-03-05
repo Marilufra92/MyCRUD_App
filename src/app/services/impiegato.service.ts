@@ -10,6 +10,7 @@ import { tap } from 'rxjs/operators';
 export class ImpiegatoService {
   private apiUrl = 'http://localhost:3000/impiegato';
   private ufficioUrl = 'http://localhost:3000/ufficio';
+  private impiegatiSediUrl = 'http://localhost:3000/impiegati-sedi';
 
   constructor(private _http: HttpClient) { }
 
@@ -51,11 +52,11 @@ export class ImpiegatoService {
   }
 
     // ottieni la lista della relazione impiegato-sede (risultato della query)
-   getImpiegatiSedi(): Observable<any> {
-    return this._http.get(`${this.apiUrl}/impiegati-sedi`).pipe(
+    getImpiegatiSedi(): Observable<any> {
+      return this._http.get(`${this.impiegatiSediUrl}`).pipe(   
         tap(data => console.log('Dati ricevuti dal server:', data))
-    );
-} 
+      );
+    }
 }
 
 
