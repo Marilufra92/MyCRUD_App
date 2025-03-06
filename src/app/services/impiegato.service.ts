@@ -28,7 +28,7 @@ export class ImpiegatoService {
   }
 
   // ottieni la lista di tutti gli impiegati
-  getListaImpiegati(): Observable<any> {
+  getListaImpiegatiTot(): Observable<any> {
     return this._http.get(`${this.apiUrl}`).pipe(
       tap(data => console.log("Dati ricevuti dal server:", data)) //  Logga i dati ricevuti
     );

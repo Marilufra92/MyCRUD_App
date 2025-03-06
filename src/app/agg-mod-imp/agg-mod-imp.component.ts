@@ -42,7 +42,7 @@ export class AggModImpComponent implements OnInit {
       azienda: '',
       esperienza: '',
       ral: 0,
-      codUff: 0  //  Variabile per memorizzare gli uffici
+      codUff: 0  
     });
 
 
@@ -69,7 +69,7 @@ export class AggModImpComponent implements OnInit {
   }
 
   getListaImpiegati() {
-    this._impiegatoService.getListaImpiegati().subscribe((res) => {
+    this._impiegatoService.getListaImpiegatiTot().subscribe((res) => {
       this.impiegati = Array.isArray(res) ? res : res.data || [];
     });
   }

@@ -72,7 +72,7 @@ dataSourceView2!: MatTableDataSource<any>;
   }
 
   getListaImpiegati() {
-    this._impService.getListaImpiegati().subscribe({
+    this._impService.getListaImpiegatiTot().subscribe({
       next: (res) => {
         console.log("Dati ricevuti dal server:", res); // Debug
 

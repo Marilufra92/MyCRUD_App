@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
-
-
+import { MatDialog } from '@angular/material/dialog';
+import { UfficioService } from '../services/ufficio.service';
+import { SelezionaImpiegatoDialogComponent } from '../seleziona-impiegato-dialog/seleziona-impiegato-dialog.component';
 
 @Component({
   selector: 'app-lista-uffici',
@@ -11,12 +12,12 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./lista-uffici.component.css']
 })
 export class ListaUfficiComponent implements OnInit {
-  displayedColumns: string[] = ['codUff', 'nomeUff', 'sede', 'indirizzo', 'numDipendenti', 'action' ];
+  displayedColumns: string[] = ['codUff', 'nomeUff', 'sede', 'indirizzo', 'numDipendenti', 'action'];
   dataSource: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private ufficioService: UfficioService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getUffici();
@@ -27,9 +28,26 @@ export class ListaUfficiComponent implements OnInit {
       (response) => {
         this.dataSource = response.data;
       },
-      (error) => {
-        console.error('Errore nel recupero degli uffici:', error);
-      }
+      (error) => console.error('Errore nel recupero degli uffici:', error)
     );
+  }
+
+  associaImpiegatodaUff(codUff: string) {
+    const dialogRef = this.dialog.open(SelezionaImpiegatoDialogComponent, {
+      width: '400px',
+      data: { codUff }
+    });
+
+    dialogRef.afterClosed().subscribe((impiegatoId) => {
+      if (impiegatoId) {
+        this.ufficioService.associaImpiegatoAUfficio(codUff, impiegatoId).subscribe(
+          () => {
+            console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`);
+            this.getUffici(); 
+          },
+          (error) => console.error('Errore nell\'associazione:', error)
+        );
+      }
+    });
   }
 }

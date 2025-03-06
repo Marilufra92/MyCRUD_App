@@ -29,12 +29,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { FormsModule } from '@angular/forms';
 
 
 
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { SelezionaImpiegatoDialogComponent } from './seleziona-impiegato-dialog/seleziona-impiegato-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
     AggModImpComponent,
     ListaImpiegatiComponent,
     ListaUfficiComponent,
-    HomeComponent
+    HomeComponent,
+    SelezionaImpiegatoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +70,8 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
     MatSnackBarModule,
     MatTabsModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    FormsModule
   ],
   providers: [
     provideClientHydration(withEventReplay()),
