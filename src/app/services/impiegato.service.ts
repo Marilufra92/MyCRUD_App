@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
+import { tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,59 +11,67 @@ export class ImpiegatoService {
   private apiUrl = 'http://localhost:3000/impiegato';
   private ufficioUrl = 'http://localhost:3000/ufficio';
   private impiegatiSediUrl = 'http://localhost:3000/impiegati-sedi';
+  private aggNumDipUrl = 'http://localhost:3000/aggiorna-num-dipendenti';
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {}
 
-
-  // aggiungi un nuovo impiegato
+  // Aggiungi un nuovo impiegato
   addImpiegato(data: any): Observable<any> {
-
-
     return this._http.post(`${this.apiUrl}`, data);
   }
 
-  // update impiegato
+  // Aggiorna un impiegato
   updateImpiegato(id: number, data: any): Observable<any> {
     return this._http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  // ottieni la lista di tutti gli impiegati
+  // Ottieni la lista completa degli impiegati
   getListaImpiegatiTot(): Observable<any> {
     return this._http.get(`${this.apiUrl}`).pipe(
-      tap(data => console.log("Dati ricevuti dal server:", data)) //  Logga i dati ricevuti
+      tap(data => console.log('Dati ricevuti dal server:', data)),
+      catchError(err => {
+        console.error('Errore nel recupero degli impiegati:', err);
+        return of([]);
+      })
     );
   }
 
-
-  //elimina impiegato
+  // Elimina un impiegato
   eliminaImpiegato(id: number): Observable<any> {
     return this._http.delete(`${this.apiUrl}/${id}`);
-
-
   }
 
-  //ottieni la lista dinamica degli uffici
+  // Ottieni la lista dinamica degli uffici
   getMenuUffici(): Observable<any> {
     return this._http.get(`${this.ufficioUrl}`).pipe(
-      tap(data => console.log("Dati ricevuti dal server:", data))
+      tap(data => console.log('Dati ricevuti dal server:', data)),
+      catchError(err => {
+        console.error('Errore nel recupero degli uffici:', err);
+        return of([]);
+      })
     );
-
-
   }
 
-    // ottieni la lista della relazione impiegato-sede (risultato della query)
-    getImpiegatiSedi(): Observable<any> {
-      return this._http.get(`${this.impiegatiSediUrl}`).pipe(   
-        tap(data => console.log('Dati ricevuti dal server:', data))
-      );
-    }
+  // Ottieni la relazione impiegato-sede
+  getImpiegatiSedi(): Observable<any> {
+    return this._http.get(`${this.impiegatiSediUrl}`).pipe(
+      tap(data => console.log('Dati ricevuti dal server:', data)),
+      catchError(err => {
+        console.error('Errore nel recupero delle relazioni impiegato-sede:', err);
+        return of([]);
+      })
+    );
+  }
+
+  // Funzione per associare un impiegato a un ufficio
+  associaImpiegatoAUff(codUff: string, impiegatoId: string): Observable<any> {
+    const url = `${this.ufficioUrl}/${codUff}/associa-impiegato`;
+    return this._http.post(url, { id: impiegatoId }).pipe(
+      tap(() => console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`)),
+      catchError(err => {
+        console.error("Errore nell'associazione dell'impiegato:", err);
+        return of({ error: "Errore nell'associazione dell'impiegato" });
+      })
+    );
+  }
 }
-
-
-
-
-
-
-
-
-

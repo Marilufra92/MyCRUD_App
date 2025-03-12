@@ -12,7 +12,7 @@ import { SelezionaImpiegatoDialogComponent } from '../seleziona-impiegato-dialog
   styleUrls: ['./lista-uffici.component.css']
 })
 export class ListaUfficiComponent implements OnInit {
-  displayedColumns: string[] = ['codUff', 'nomeUff', 'sede', 'indirizzo', 'numDipendenti', 'action'];
+  displayedColumns: string[] = ['codUff', 'nomeUff', 'sede', 'indirizzo', 'numInterno', 'action'];
   dataSource: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort | undefined;
