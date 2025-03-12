@@ -37,17 +37,15 @@ export class ListaUfficiComponent implements OnInit {
       width: '400px',
       data: { codUff }
     });
-
+  
     dialogRef.afterClosed().subscribe((impiegatoId) => {
       if (impiegatoId) {
-        this.ufficioService.associaImpiegatoAUfficio(codUff, impiegatoId).subscribe(
-          () => {
-            console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`);
-            this.getUffici(); 
-          },
-          (error) => console.error('Errore nell\'associazione:', error)
-        );
+        // Una sola chiamata al backend, che viene già fatta nel componente SelezionaImpiegatoDialogComponent
+        console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`);
+        this.getUffici();  // Ricarica la lista degli uffici dopo l'associazione
       }
     });
   }
+  
+
 }

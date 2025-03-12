@@ -63,15 +63,28 @@ export class ImpiegatoService {
     );
   }
 
+
   // Funzione per associare un impiegato a un ufficio
-  associaImpiegatoAUff(codUff: string, impiegatoId: string): Observable<any> {
-    const url = `${this.ufficioUrl}/${codUff}/associa-impiegato`;
-    return this._http.post(url, { id: impiegatoId }).pipe(
-      tap(() => console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`)),
-      catchError(err => {
-        console.error("Errore nell'associazione dell'impiegato:", err);
-        return of({ error: "Errore nell'associazione dell'impiegato" });
-      })
-    );
-  }
+associaImpiegatoAUff(codUff: string, impiegatoId: string): Observable<any> {
+  const url = `${this.ufficioUrl}/${codUff}/associa-impiegato`;
+
+  // Assicurati di passare i dati nel formato giusto
+  const payload = { id: impiegatoId };
+  
+
+  console.log('Invio dei dati al server:', payload);  // Aggiungi un log per vedere i dati
+  console.log('ID impiegato:', impiegatoId);
+
+  return this._http.post(url, payload, {
+    headers: { 'Content-Type': 'application/json' }
+  }).pipe(
+    tap(() => console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`)),
+    catchError(err => {
+      console.error("Errore nell'associazione dell'impiegato:", err);
+      return of({ error: "Errore nell'associazione dell'impiegato" });
+    })
+  );
+}
+
+  
 }
