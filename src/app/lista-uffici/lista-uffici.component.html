@@ -1,54 +1,123 @@
-<div class="main-body">
-  <div class="table-container">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<mat-sidenav-container class="container">
+  <!-- barra laterale verticale/sidebar -->
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-nav-list>  
+      <mat-list-item (click)="setView('uffici')" [class.selected]="currentView === 'uffici'">
+        <mat-icon>account_balance</mat-icon> Lista Uffici
+      </mat-list-item> 
+      <mat-list-item (click)="setView('dipendenti-per-ufficio')" [class.selected]="currentView === 'dipendenti-per-ufficio'">
+        <mat-icon>group</mat-icon> Conteggio Dipendenti
+      </mat-list-item>
+      <mat-list-item (click)="setView('')" [class.selected]="currentView === ''">   <!-- da implementare -->
+        <mat-icon>place</mat-icon> View 3
+      </mat-list-item>
+      <mat-list-item (click)="setView('')" [class.selected]="currentView === ''">   <!-- da implementare -->
+        <mat-icon>map</mat-icon> View 4
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
 
-      <!-- Codice Ufficio Column -->
-      <ng-container matColumnDef="codUff">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Codice Ufficio </th>
-        <td mat-cell *matCellDef="let row"> {{ row.codUff }} </td>
-      </ng-container>
+  <!-- Contenuto principale -->
+  <mat-sidenav-content class="content">
+    <ng-container [ngSwitch]="currentView">
 
-      <!-- Nome Ufficio Column -->
-      <ng-container matColumnDef="nomeUff">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome Ufficio </th>
-        <td mat-cell *matCellDef="let row"> {{ row.nomeUff }} </td>
-      </ng-container>
-
-      <!-- sede Column -->
-      <ng-container matColumnDef="sede">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sede </th>
-        <td mat-cell *matCellDef="let row"> {{ row.sede }} </td>
-      </ng-container>
-
-      <!-- indirizzo Column -->
-      <ng-container matColumnDef="indirizzo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Indirizzo </th>
-        <td mat-cell *matCellDef="let row"> {{ row.indirizzo }} </td>
-      </ng-container>
-
-      <!-- numInterno Column -->
-      <ng-container matColumnDef="numInterno">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>  Tel. Interno </th>
-        <td mat-cell *matCellDef="let row"> {{ row.numInterno }} </td>
-      </ng-container>
-
-      <!-- colonna laterale con bottoni  -->
-  
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Associa Dipendente</th>
-        <td mat-cell *matCellDef="let row" class="online">
+      <!-- VIEW 1: Lista Uffici -->
+      <div *ngSwitchCase="'uffici'">
         
-          <button mat-icon-button color="primary" (click)="associaImpiegatodaUff(row.codUff)">
-            <mat-icon>add</mat-icon>
 
-          </button>
-        </td>
-      </ng-container>
+          <div class="table-container">
+            <table mat-table [dataSource]="dataSource" matSort>
 
-      <!-- Header e righe della tabella -->
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <!-- Codice Ufficio Column -->
+              <ng-container matColumnDef="codUff">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Codice Ufficio </th>
+                <td mat-cell *matCellDef="let row"> {{ row.codUff }} </td>
+              </ng-container>
 
-    </table>
-  </div>
-</div>
+              <!-- Nome Ufficio Column -->
+              <ng-container matColumnDef="nomeUff">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome Ufficio </th>
+                <td mat-cell *matCellDef="let row"> {{ row.nomeUff }} </td>
+              </ng-container>
+
+              <!-- Sede Column -->
+              <ng-container matColumnDef="sede">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sede </th>
+                <td mat-cell *matCellDef="let row"> {{ row.sede }} </td>
+              </ng-container>
+
+              <!-- Indirizzo Column -->
+              <ng-container matColumnDef="indirizzo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Indirizzo </th>
+                <td mat-cell *matCellDef="let row"> {{ row.indirizzo }} </td>
+              </ng-container>
+
+              <!-- Numero Interno Column -->
+              <ng-container matColumnDef="numInterno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tel. Interno </th>
+                <td mat-cell *matCellDef="let row"> {{ row.numInterno }} </td>
+              </ng-container>
+
+              <!-- Azioni Column -->
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Associa Dipendente </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button color="primary" (click)="associaImpiegatodaUff(row.codUff)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Header e righe della tabella -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleziona pagina uffici"></mat-paginator>
+          </div>
+        </div>
+      
+
+      <!-- VIEW 2: Conteggio Dipendenti per Ufficio -->
+      <div *ngSwitchCase="'dipendenti-per-ufficio'">
+        <div class="main-body">
+          <mat-form-field>
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="($event)" placeholder="Ex. marketing" #input>
+          </mat-form-field>
+        
+          <div class="table-container">
+            <mat-table [dataSource]="dataSourceConteggio" matSort class="mat-elevation-z8">
+
+              <!-- Codice Ufficio Column -->
+              <ng-container matColumnDef="codUff">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Codice Ufficio </th>
+                <td mat-cell *matCellDef="let row"> {{ row.codUff }} </td>
+              </ng-container>
+
+              <!-- Nome Ufficio Column -->
+              <ng-container matColumnDef="nomeUff">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome Ufficio </th>
+                <td mat-cell *matCellDef="let row"> {{ row.nomeUff }} </td>
+              </ng-container>
+
+              <!-- Numero Dipendenti Column -->
+              <ng-container matColumnDef="numeroDipendenti">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero Dipendenti </th>
+                <td mat-cell *matCellDef="let row"> {{ row.numeroDipendenti }} </td>
+              </ng-container>
+
+              <!--<tr mat-header-row *matHeaderRowDef="displayedColumnsConteggio"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsConteggio;"></tr> -->
+
+            </mat-table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleziona pagina conteggio dipendenti"></mat-paginator>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>
