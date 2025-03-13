@@ -46,8 +46,7 @@ mat-nav-list mat-list-item {
 }
 
 mat-nav-list mat-list-item:hover {
-  background-color: #b3ffdd;
-  /* verdino chiaro al passaggio del mouse */
+  background-color: #b3ffdd; /* verdino chiaro al passaggio del mouse */
   color: #333;
 
 }
@@ -55,7 +54,7 @@ mat-nav-list mat-list-item:hover {
 .table-container {
   width: 100%;
   margin-top: 20px;
-  background: white;
+  background: rgb(242, 234, 234);
   border-radius: 8px;
   padding: 10px;
   flex-grow: 1;

@@ -11,7 +11,7 @@ export class ImpiegatoService {
   private apiUrl = 'http://localhost:3000/impiegato';
   private ufficioUrl = 'http://localhost:3000/ufficio';
   private impiegatiSediUrl = 'http://localhost:3000/impiegati-sedi';
-  private aggNumDipUrl = 'http://localhost:3000/aggiorna-num-dipendenti';
+
 
   constructor(private _http: HttpClient) {}
 
@@ -41,7 +41,7 @@ export class ImpiegatoService {
     return this._http.delete(`${this.apiUrl}/${id}`);
   }
 
-  // Ottieni la lista dinamica degli uffici
+  // Ottieni la lista dinamica degli uffici (nel field del dialog)
   getMenuUffici(): Observable<any> {
     return this._http.get(`${this.ufficioUrl}`).pipe(
       tap(data => console.log('Dati ricevuti dal server:', data)),
@@ -52,7 +52,7 @@ export class ImpiegatoService {
     );
   }
 
-  // Ottieni la relazione impiegato-sede
+  // Ottieni la relazione impiegato-sede dal backend ( view2)
   getImpiegatiSedi(): Observable<any> {
     return this._http.get(`${this.impiegatiSediUrl}`).pipe(
       tap(data => console.log('Dati ricevuti dal server:', data)),
@@ -68,12 +68,11 @@ export class ImpiegatoService {
 associaImpiegatoAUff(codUff: string, impiegatoId: string): Observable<any> {
   const url = `${this.ufficioUrl}/${codUff}/associa-impiegato`;
 
-  // Assicurati di passare i dati nel formato giusto
   const payload = { id: impiegatoId };
   
 
-  console.log('Invio dei dati al server:', payload);  // Aggiungi un log per vedere i dati
-  console.log('ID impiegato:', impiegatoId);
+  /* console.log('Invio dei dati al server:', payload);  // Aggiungi un log per vedere i dati
+  console.log('ID impiegato:', impiegatoId); */
 
   return this._http.post(url, payload, {
     headers: { 'Content-Type': 'application/json' }

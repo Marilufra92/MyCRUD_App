@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-start;
   margin-top: 20px;
-  height: 100vh;
+  height: 100%;
 }
 
 mat-sidenav {
@@ -40,9 +40,9 @@ mat-nav-list mat-list-item:hover {
 
 /* Contenitore della tabella */
 .table-container {
-  width: 80%;
+  width: 100%;
   margin-top: 20px;
-  background: white;
+  background: rgb(242, 234, 234);
   border-radius: 8px;
   padding: 10px;
   flex-grow: 1;
@@ -53,6 +53,7 @@ mat-table {
   width: 100%;
   border-radius: 8px;
   table-layout: fixed;
+   
 }
 
 mat-header-row {
@@ -69,22 +70,11 @@ th,
 td {
   padding: 12px;
   text-align: center;
+ 
 }
 
 .mat-elevation-z8 {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  
 }
 
-.mat-form-field {
-  width: 250px;
-  margin-bottom: 15px;
-}
-
-/* Aggiunta del layout per la barra laterale con i bottoni */
-.divbutton {
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  margin-right: 50px;
-  padding-top: 10px;
-}

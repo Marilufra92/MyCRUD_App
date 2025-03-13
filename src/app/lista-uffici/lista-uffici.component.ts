@@ -4,6 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { UfficioService } from '../services/ufficio.service';
 import { SelezionaImpiegatoDialogComponent } from '../seleziona-impiegato-dialog/seleziona-impiegato-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-lista-uffici',
@@ -12,50 +14,47 @@ import { SelezionaImpiegatoDialogComponent } from '../seleziona-impiegato-dialog
   styleUrls: ['./lista-uffici.component.css']
 })
 export class ListaUfficiComponent implements OnInit {
+  currentView: string = 'uffici'; 
+  // tabella uffici VIEW 1
   displayedColumns: string[] = ['codUff', 'nomeUff', 'sede', 'indirizzo', 'numInterno', 'action'];
-  dataSource: any[] = [];
-  dataSourceConteggio: any[] = [];  // Nuovo array per i dati del conteggio dei dipendenti per ufficio
-  currentView: string = 'uffici';  // Variabile per gestire la vista corrente
 
-  @ViewChild(MatSort) sort: MatSort | undefined;
+  dataSource!: MatTableDataSource<any>;
+  
 
-  constructor(private http: HttpClient, private ufficioService: UfficioService, public dialog: MatDialog) {}
+   // tabella VIEW 2 - COUNT dipendenti negli uffici
+   displayedColumns2: string[] = [
+    'codUff',
+    'nomeUff',
+    'Conteggio_dipendenti'
+   ]; 
+    
+  dataSourceConteggio!: MatTableDataSource<any>;
+    
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(private http: HttpClient,
+              private ufficioService: UfficioService, 
+              public dialog: MatDialog,
+              
+            ) {}
 
   ngOnInit(): void {
-    this.getUffici();  // Recupera gli uffici all'inizio
+    this.getUffici();  
   }
 
   // Funzione per recuperare gli uffici
   getUffici() {
     this.http.get<any>('http://localhost:3000/ufficio').subscribe(
       (response) => {
-        this.dataSource = response.data;  // Popola la lista degli uffici
+        this.dataSource = new MatTableDataSource(response.data);  // Popola la lista degli uffici
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
       (error) => console.error('Errore nel recupero degli uffici:', error)
     );
   }
-
-  /* Funzione per recuperare il conteggio dei dipendenti per ufficio
-  getConteggioDipendenti() {
-    this.http.get<any>('http://localhost:3000/ufficio/conteggio-dipendenti').subscribe(
-      (response) => {
-        this.dataSourceConteggio = response.data;  // Popola il conteggio dei dipendenti
-      },
-      (error) => console.error('Errore nel recupero del conteggio dei dipendenti:', error)
-    );
-  }  */
-
-    getConteggioDipendenti() {
-      throw new Error('Method not implemented.');
-    }
-
-  // Funzione per cambiare la vista
-  setView(view: string) {
-    this.currentView = view;  // Imposta la vista attiva
-    if (view === 'dipendenti-per-ufficio') {
-      this.getConteggioDipendenti();  // Recupera i dati dei dipendenti per ufficio quando si cambia alla vista dei dipendenti
-    }
-  } 
   
 
   // Funzione per associare un impiegato a un ufficio
@@ -73,4 +72,34 @@ export class ListaUfficiComponent implements OnInit {
       }
     });
   }
+
+
+  // Funzione per cambiare la vista
+  setView(view: string) {
+    this.currentView = view;  
+    if (view === 'dipendenti-per-ufficio') {
+      this.getConteggioDipendentiRisultato();  
+    }
+  };
+
+   // ottiene i dati del risultato della query conteggio dipendenti
+  getConteggioDipendentiRisultato() {
+    this.ufficioService.getCountDip().subscribe({
+      next: (res) => {
+        console.log("Dati ricevuti per conteggio impiegati negli uffici :", res);
+         if (res && Array.isArray(res.data)) {
+                  this.dataSourceConteggio = new MatTableDataSource(res.data); // Assegna i dati alla view2
+               
+                } else {
+                  console.error("Errore: i dati ricevuti non sono un array", res);
+                }}
+
+
+
+    })
+  }
+
+  
+
+  
 }
