@@ -4,7 +4,6 @@ import { ImpiegatoService } from '../services/impiegato.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../core/core.service';
 
-
 @Component({
   selector: 'app-agg-mod-imp',
   standalone: false,
@@ -42,15 +41,12 @@ export class AggModImpComponent implements OnInit {
       azienda: '',
       esperienza: '',
       ral: 0,
-      codUff: 0  
+      codUff: { value: 0, disabled: true } // Inizialmente read-only
     });
-
-
   }
 
   ngOnInit(): void {
     if (this.data) {
-      // Controlliamo che la data non sia null o invalida
       const parsedDate = this.correctDateForInput(this.data.datadinascita);
       this.impForm.patchValue({
         ...this.data,
@@ -58,14 +54,21 @@ export class AggModImpComponent implements OnInit {
       });
     }
 
-    // Recupera la lista degli uffici dal servizio e popola il menu a tendina
     this._impiegatoService.getMenuUffici().subscribe({
       next: (res) => {
-        console.log("Uffici ricevuti:", res);  // Debug
-        this.ufficio = Array.isArray(res.data) ? res.data : [];  // Popola il menu a tendina
+        console.log("Uffici ricevuti:", res);
+        this.ufficio = Array.isArray(res.data) ? res.data : [];
       },
       error: (err) => console.error("Errore nel recupero degli uffici:", err)
     });
+  }
+
+  setReadOnly(readOnly: boolean) {
+    if (readOnly) {
+      this.impForm.get('codUff')?.disable();
+    } else {
+      this.impForm.get('codUff')?.enable();
+    }
   }
 
   getListaImpiegati() {
@@ -74,7 +77,6 @@ export class AggModImpComponent implements OnInit {
     });
   }
 
-  //  Funzione per correggere la data PRIMA di inviarla al backend
   correctDateForBackend(date: any): string {
     if (!date) return '';
     const parsedDate = new Date(date);
@@ -85,10 +87,9 @@ export class AggModImpComponent implements OnInit {
     }
 
     parsedDate.setMinutes(parsedDate.getMinutes() - parsedDate.getTimezoneOffset());
-    return parsedDate.toISOString().split('T')[0]; // Restituisce solo YYYY-MM-DD
+    return parsedDate.toISOString().split('T')[0];
   }
 
-  // Funzione per correggere la data PRIMA di mostrarla nel form
   correctDateForInput(date: string | null): Date | null {
     if (!date) return null;
     const parsedDate = new Date(date);

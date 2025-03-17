@@ -1,3 +1,47 @@
+/* Stile generale per il container delle tabelle */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  background: rgb(242, 234, 234);
+  border-radius: 8px;
+  padding: 10px;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+/* Stile uniforme per le tabelle */
+mat-table {
+  width: 100%;
+  border-radius: 8px;
+  table-layout: fixed;
+}
+
+/* Centrare il testo nelle intestazioni delle colonne */
+th.mat-header-cell {
+  text-align: center !important;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+/* Centrare il testo nelle celle della tabella */
+td.mat-cell {
+  text-align: center !important;
+  vertical-align: middle;
+}
+
+/* Stile per l'azione con il bottone */
+td.mat-cell button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Aggiunto padding per maggiore leggibilità */
+th.mat-header-cell, td.mat-cell {
+  padding: 12px;
+}
+
 .main-body {
   display: flex;
   justify-content: flex-start;
@@ -13,7 +57,6 @@ mat-sidenav {
 mat-nav-list {
   background-color: #b3e0ff;
 }
-
 
 mat-nav-list mat-list-item {
   border-radius: 10px;
@@ -38,24 +81,6 @@ mat-nav-list mat-list-item:hover {
   color: #333;
 }
 
-/* Contenitore della tabella */
-.table-container {
-  width: 100%;
-  margin-top: 20px;
-  background: rgb(242, 234, 234);
-  border-radius: 8px;
-  padding: 10px;
-  flex-grow: 1;
-  overflow: auto;
-}
-
-mat-table {
-  width: 100%;
-  border-radius: 8px;
-  table-layout: fixed;
-   
-}
-
 mat-header-row {
   color: #333;
   font-weight: bold;
@@ -70,11 +95,8 @@ th,
 td {
   padding: 12px;
   text-align: center;
- 
 }
 
 .mat-elevation-z8 {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  
 }
-
