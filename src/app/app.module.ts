@@ -30,6 +30,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -71,7 +72,8 @@ import { SelezionaImpiegatoDialogComponent } from './seleziona-impiegato-dialog/
     MatTabsModule,
     MatSidenavModule,
     MatListModule,
-    FormsModule
+    FormsModule,
+    MatCardModule
   ],
   providers: [
     provideClientHydration(withEventReplay()),

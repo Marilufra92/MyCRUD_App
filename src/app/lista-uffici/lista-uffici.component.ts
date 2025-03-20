@@ -48,7 +48,7 @@ export class ListaUfficiComponent implements OnInit {
   getUffici() {
     this.http.get<any>('http://localhost:3000/ufficio').subscribe(
       (response) => {
-        this.dataSource = new MatTableDataSource(response.data);  // Popola la lista degli uffici
+        this.dataSource = new MatTableDataSource(response.data);  
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },

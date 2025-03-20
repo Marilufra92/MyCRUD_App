@@ -38,7 +38,8 @@ td.mat-cell button {
 }
 
 /* Aggiunto padding per maggiore leggibilità */
-th.mat-header-cell, td.mat-cell {
+th.mat-header-cell,
+td.mat-cell {
   padding: 12px;
 }
 
@@ -99,4 +100,29 @@ td {
 
 .mat-elevation-z8 {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.card-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.ufficio-card {
+  width: 320px;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+
+.iconaUfficio {
+  width: 130px;
+  height: 130px;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+
 }

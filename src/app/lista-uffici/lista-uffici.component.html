@@ -8,10 +8,10 @@
       <mat-list-item (click)="setView('dipendenti-per-ufficio')" [class.selected]="currentView === 'dipendenti-per-ufficio'">
         <mat-icon>group</mat-icon> Conteggio Dipendenti
       </mat-list-item>
-      <mat-list-item (click)="setView('')" [class.selected]="currentView === ''">   <!-- da implementare -->
+      <mat-list-item (click)="setView('da-implememtare1')" [class.selected]="currentView === 'da-implememtare1'">   <!-- da implementare -->
         <mat-icon>place</mat-icon> View 3
       </mat-list-item>
-      <mat-list-item (click)="setView('')" [class.selected]="currentView === ''">   <!-- da implementare -->
+      <mat-list-item (click)="setView('da-implementare2')" [class.selected]="currentView === 'da-implementare2'">   <!-- da implementare -->
         <mat-icon>map</mat-icon> View 4
       </mat-list-item>
     </mat-nav-list>
@@ -77,6 +77,57 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleziona pagina uffici"></mat-paginator>
           </div>
         </div>
+
+        <!-- Sezione delle Card  -->
+        <div class="card-container">
+          <!-- Card 1 -->
+          <mat-card class="ufficio-card">
+            <mat-card-header>
+              <mat-card-title>Ufficio Risorse Umane</mat-card-title>
+            </mat-card-header>
+            <div [ngClass]="'iconaUfficio'"><img mat-card-image src="https://img.icons8.com/?size=100&id=36m26sAM2RfO&format=png&color=000000" alt="HR" ></div>
+            <mat-card-content>
+              <p>Gestisce il personale, la formazione e le assunzioni in azienda.</p>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Card 2 -->
+          <mat-card class="ufficio-card">
+            <mat-card-header>
+              <mat-card-title>Ufficio Tecnico</mat-card-title>
+            </mat-card-header>
+            <div [ngClass]="'iconaUfficio'" ><img mat-card-image src="https://img.icons8.com/?size=100&id=tGFliXQWsAP5&format=png&color=000000" alt="IT" ></div>
+            <mat-card-content>
+              <p>Gestisce l’infrastruttura tecnologica, lo sviluppo software e il supporto tecnico aziendale.</p>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Card 3 -->
+          <mat-card class="ufficio-card">
+            <mat-card-header>
+              <mat-card-title>Cybersecurity</mat-card-title>
+            </mat-card-header>
+            <div [ngClass]="'iconaUfficio'" ><img mat-card-image src="https://img.icons8.com/?size=100&id=FbRY9JkBrjiX&format=png&color=000000" alt="CYB"></div>
+            <mat-card-content>
+              <p>Protegge i sistemi aziendali da minacce informatiche, garantendo la sicurezza dei dati e delle reti.</p>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Card 4 -->
+          <mat-card class="ufficio-card">
+            <mat-card-header>
+              <mat-card-title>Ufficio Marketing</mat-card-title>
+            </mat-card-header>
+            <div [ngClass]="'iconaUfficio'" ><img mat-card-image src="https://img.icons8.com/?size=100&id=qG05IuQtGU57&format=png&color=000000" alt="MKT" ></div>
+            <mat-card-content>
+              <p>Promuove il brand, analizza il mercato e crea strategie di vendita.</p>
+            </mat-card-content>
+          </mat-card>
+
+          
+        </div>
+      
+      
       
 
       <!-- VIEW 2: Conteggio Dipendenti per Ufficio -->

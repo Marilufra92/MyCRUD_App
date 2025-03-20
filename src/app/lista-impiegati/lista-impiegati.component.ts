@@ -16,6 +16,7 @@ import { AggModImpComponent } from '../agg-mod-imp/agg-mod-imp.component';
 export class ListaImpiegatiComponent implements OnInit {
 
   currentView: string = 'impiegati';
+  
 
   // tabella-colonne VIEW 1
   displayedColumns: string[] = [
@@ -29,10 +30,11 @@ export class ListaImpiegatiComponent implements OnInit {
     'azienda',
     'esperienza',
     'ral',
-    'codUff',
+    //'codUff',
     'action'
   ];
   dataSource!: MatTableDataSource<any>;
+  nascondiColonna = true; // Imposta a false per mostrare la colonna
 
     
 
