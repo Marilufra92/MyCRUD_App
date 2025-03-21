@@ -1,38 +1,50 @@
+
 html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden;  
-  height: 100vh;  
+  height: 100vh;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;  /* Imposta il colore di sfondo se necessario */
 }
 
-.title{
+.title {
   position: absolute;
-  top: 20%;  /* Porta il titolo al centro verticale */
-  left: 50%; /* Porta il titolo al centro orizzontale */
-  transform: translate(-50%, -50%); /* Corregge la posizione esattamente al centro */
+  top: 25%;  /* Posiziona il titolo in alto */
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  font-size: 2rem;
-  color: rgb(18, 7, 56);
-  background-color: rgba(108, 203, 237, 0.5); /* Sfondo trasparente per leggibilità */
+  font-size: 3rem;
+  color: rgb(255, 255, 255);
   padding: 10px 20px;
   border-radius: 10px;
-
-  
+  z-index: 3;  /* Assicurati che il titolo venga sopra le immagini */
 }
 
-
-
 .home-container {
-  background: url('https://img.freepik.com/vettori-gratuito/illustrazione-di-concetto-di-processo-di-progettazione_114360-529.jpg?t=st=1739957925~exp=1739961525~hmac=37e62fde0dd8be4f13de4670e0b86a234fc5a483715b74be1cda662c3b18bcf4&w=740') no-repeat center center;
-  background-position: center center; 
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
-  background-size: contain;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
-  
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.gestionale {
+  position: absolute;
+  top: 10%;  /* Posiziona l'immagine "gestionale" sopra la "pattern" */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 50%; /* Imposta una larghezza massima per mantenere l'immagine dimensionata correttamente */
+  z-index: 2; /* L'immagine "gestionale" deve essere sopra l'immagine "pattern" */
+  mix-blend-mode: multiply;
+}
+
+.pattern {
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* L'immagine "pattern" deve essere in basso */
 }
