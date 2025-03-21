@@ -99,6 +99,12 @@ export class ListaUfficiComponent implements OnInit {
     })
   }
 
+  onCardClick(ufficio: string) {
+    console.log(`Hai cliccato su: ${ufficio}`);
+   
+
+  }
+
   
 
   
