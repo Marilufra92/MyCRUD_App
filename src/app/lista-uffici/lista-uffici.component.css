@@ -15,7 +15,6 @@ mat-table {
   width: 100%;
   border-radius: 8px;
   table-layout: fixed;
-
 }
 
 /* Centrare il testo nelle intestazioni delle colonne */
@@ -55,12 +54,10 @@ mat-sidenav {
   background-color: #b3e0ff;
   color: #333;
   height: 100%;
-  
 }
 
 mat-nav-list {
   background-color: #b3e0ff;
-   
 }
 
 mat-nav-list mat-list-item {
@@ -112,6 +109,8 @@ td {
   justify-content: space-around;
   flex-wrap: wrap;
   margin-top: 20px;
+
+  
 }
 
 .ufficio-card {
@@ -119,8 +118,8 @@ td {
   margin: 10px;
   padding: 10px;
   text-align: center;
-  border-radius: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
@@ -130,11 +129,12 @@ td {
   transform: scale(1.05);
   box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.3);
   filter: brightness(1.1);
+  background-color: #ecffa7 !important;
 }
 
-
+/* Colori specifici per ogni ufficio */
 .ufficio-card:nth-child(1) {
-  background-color: #d2dcfc;  
+  background-color: #d2dcfc;   
 }
 
 .ufficio-card:nth-child(2) {
@@ -146,14 +146,36 @@ td {
 }
 
 .ufficio-card:nth-child(4) {
-  background-color: #d2dcfc;  
+  background-color: #d2dcfc;   
 }
 
-/* Icone centrate */
+
+ 
 .iconaUfficio {
-  width: 130px;
-  height: 130px;
+  width: 130px;  
+  height: 130px;  
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center;   
+  align-items: center;  
+  margin: 0 auto;  
 }
+.mat-card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  
+}
+
+.mat-card-content {
+  color: white;
+  font-size: 15px;
+  padding: 15px;
+
+}
+
+.mat-card-header {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+ 

@@ -33,6 +33,7 @@ export class ListaUfficiComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('dialogTemplate') dialogTemplate: any;
 
   constructor(private http: HttpClient,
               private ufficioService: UfficioService, 
@@ -100,10 +101,29 @@ export class ListaUfficiComponent implements OnInit {
   }
 
   onCardClick(ufficio: string) {
-    console.log(`Hai cliccato su: ${ufficio}`);
-   
-
+    // Oggetto con le descrizioni per ogni ufficio
+    const descrizioniUffici: { [key: string]: string } = {
+      'Risorse Umane': "L'Ufficio Risorse Umane è responsabile per la gestione e lo sviluppo del personale all'interno dell'azienda. Si occupa di attività come il reclutamento, la formazione, la gestione delle carriere e delle performance dei dipendenti, nonché delle politiche retributive e del benessere organizzativo. È un punto di riferimento per i dipendenti riguardo a contratti, diritti e opportunità di crescita professionale.",
+      'Ufficio Tecnico': "L'Ufficio Tecnico è incaricato della gestione e manutenzione dell'infrastruttura tecnologica dell'azienda. Le sue attività comprendono lo sviluppo software, la gestione dei sistemi informativi, il supporto tecnico quotidiano, e l'implementazione di nuove soluzioni tecnologiche. Questo ufficio è essenziale per garantire che le risorse informatiche aziendali siano sempre aggiornate, sicure e funzionanti.",
+      'Cybersecurity': "L'Ufficio Cybersecurity si occupa della protezione dei sistemi informatici e delle reti aziendali contro le minacce digitali. Gestisce la sicurezza dei dati sensibili, implementa misure di prevenzione contro attacchi informatici, e monitora costantemente le vulnerabilità nei sistemi. L'obiettivo è garantire la sicurezza delle informazioni aziendali e tutelare la privacy dei clienti e dei dipendenti.",
+      'Marketing': "L'Ufficio Marketing è responsabile della pianificazione e dell'esecuzione delle strategie di marketing per promuovere il brand e i prodotti aziendali. Si occupa di analizzare il mercato, studiare i comportamenti dei consumatori e sviluppare campagne pubblicitarie efficaci. Inoltre, coordina la creazione di contenuti, la gestione dei social media e la comunicazione con i clienti per favorire la crescita dell'azienda."
+    };
+  
+    // Ottieni la descrizione dell'ufficio cliccato
+    const descrizione = descrizioniUffici[ufficio];
+  
+    if (descrizione) {
+      this.dialog.open(this.dialogTemplate, {
+        width: '600px',   
+        height: '500px', 
+        data: { titolo: ufficio, descrizione: descrizione }
+      });
+    } else {
+      console.error(`Descrizione non trovata per l'ufficio: ${ufficio}`);
+    }
   }
+  
+  
 
   
 
