@@ -41,7 +41,7 @@ export class AggModImpComponent implements OnInit {
       azienda: '',
       esperienza: '',
       ral: 0,
-      codUff: { value: 0, disabled: true } // Inizialmente read-only
+  
     });
   }
 
@@ -63,13 +63,6 @@ export class AggModImpComponent implements OnInit {
     });
   }
 
-  setReadOnly(readOnly: boolean) {
-    if (readOnly) {
-      this.impForm.get('codUff')?.disable();
-    } else {
-      this.impForm.get('codUff')?.enable();
-    }
-  }
 
   getListaImpiegati() {
     this._impiegatoService.getListaImpiegatiTot().subscribe((res) => {

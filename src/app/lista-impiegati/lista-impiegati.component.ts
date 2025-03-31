@@ -30,7 +30,6 @@ export class ListaImpiegatiComponent implements OnInit {
     'azienda',
     'esperienza',
     'ral',
-    //'codUff',
     'action'
   ];
   dataSource!: MatTableDataSource<any>;
