@@ -41,7 +41,6 @@ export class AggModImpComponent implements OnInit {
       azienda: '',
       esperienza: '',
       ral: 0,
-  
     });
   }
 
@@ -63,7 +62,6 @@ export class AggModImpComponent implements OnInit {
     });
   }
 
-
   getListaImpiegati() {
     this._impiegatoService.getListaImpiegatiTot().subscribe((res) => {
       this.impiegati = Array.isArray(res) ? res : res.data || [];
@@ -73,12 +71,10 @@ export class AggModImpComponent implements OnInit {
   correctDateForBackend(date: any): string {
     if (!date) return '';
     const parsedDate = new Date(date);
-
     if (isNaN(parsedDate.getTime())) {
       console.error("Errore: Data non valida", date);
       return '';
     }
-
     parsedDate.setMinutes(parsedDate.getMinutes() - parsedDate.getTimezoneOffset());
     return parsedDate.toISOString().split('T')[0];
   }
@@ -100,7 +96,7 @@ export class AggModImpComponent implements OnInit {
         this._impiegatoService.updateImpiegato(this.data.id, formData).subscribe({
           next: () => {
             this._coreService.openSnackBar('Impiegato aggiornato!');
-            this._dialogRef.close(true);
+            this.closeDialogSafely();
           },
           error: (err) => console.error(err),
         });
@@ -108,11 +104,17 @@ export class AggModImpComponent implements OnInit {
         this._impiegatoService.addImpiegato(formData).subscribe({
           next: () => {
             this._coreService.openSnackBar('Impiegato aggiunto correttamente!');
-            this._dialogRef.close(true);
+            this.closeDialogSafely();
           },
           error: (err) => console.error(err),
         });
       }
     }
+  }
+
+  closeDialogSafely() {
+    setTimeout(() => {
+      this._dialogRef.close(true);
+    }, 100); // Ritardo per prevenire il problema del focus
   }
 }
