@@ -44,7 +44,7 @@ export class ListaImpiegatiComponent implements OnInit {
   'cognome',
   'sede'
 ];
-dataSourceView2!: MatTableDataSource<any>;
+dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array vuoto
 
 @ViewChild(MatPaginator) paginator!: MatPaginator;
 @ViewChild(MatSort) sort!: MatSort;
@@ -151,14 +151,14 @@ dataSourceView2!: MatTableDataSource<any>;
   getRelazioneImpiegatoSede() {
     this._impService.getImpiegatiSedi().subscribe({
       next: (res) => {
-        console.log("Dati ricevuti per impiegati-sedi:", res);
-
-        if (res && Array.isArray(res.data)) {
-          this.dataSourceView2 = new MatTableDataSource(res.data); // Assegna i dati alla seconda tabella
+        console.log("Risposta completa ricevuta per impiegati-sedi:", res);
+  
+        if (res && res.data && Array.isArray(res.data)) {
+          this.dataSourceView2.data = res.data; // Assegna direttamente i dati
           this.dataSourceView2.sort = this.sort;
           this.dataSourceView2.paginator = this.paginator;
         } else {
-          console.error("Errore: i dati ricevuti non sono un array", res);
+          console.error("Errore: i dati ricevuti non sono validi", res);
         }
       },
       error: (err) => {
@@ -166,6 +166,8 @@ dataSourceView2!: MatTableDataSource<any>;
       }
     });
   }
+  
+  
 }
   
 
