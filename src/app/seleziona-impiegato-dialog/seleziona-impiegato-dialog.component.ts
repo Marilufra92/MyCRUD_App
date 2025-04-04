@@ -21,45 +21,52 @@ export class SelezionaImpiegatoDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.caricaImpiegatiDisponibili();
+  }
+
+  caricaImpiegatiDisponibili() {
+    // Recupera tutti gli impiegati
     this.impiegatoService.getListaImpiegatiTot().subscribe(
       (response) => {
-        this.impiegati = response.data;
+        const tuttiImpiegati = response.data;
+
+        // Recupera la lista di impiegati già associati a un ufficio
+        this.impiegatoService.getImpiegatiSedi().subscribe(
+          (res) => {
+            const impiegatiAssociati = res.data.map((i: any) => i.id); // Ottiene solo gli ID
+
+            // Filtra solo quelli che NON sono già associati a un ufficio
+            this.impiegati = tuttiImpiegati.filter((imp: any) => !impiegatiAssociati.includes(imp.id));
+
+            console.log("Impiegati disponibili per l'associazione:", this.impiegati);
+          },
+          (error) => console.error("Errore nel recupero degli impiegati associati:", error)
+        );
       },
       (error) => console.error("Errore nel recupero degli impiegati:", error)
     );
   }
 
-  // Funzione per aggiornare il codUff degli impiegati selezionati
   salvaAssociazione() {
     if (this.selectedImpiegati.length === 0) {
       this.snackBar.open('Seleziona almeno un impiegato', 'OK', { duration: 3000 });
       return;
     }
-  
-    const impiegatoId = this.selectedImpiegati[0];  // Prendi il primo impiegato selezionato
-    
-    // Log per verificare l'ID impiegato selezionato
-    console.log('Impiegato selezionato:', this.selectedImpiegati); // Controlla tutti gli impiegati selezionati
-    console.log('ID impiegato selezionato:', impiegatoId);  // Log per vedere l'ID del primo impiegato selezionato
-  
+
+    const impiegatoId = this.selectedImpiegati[0]; 
+
     if (!impiegatoId) {
       console.error("ID impiegato non valido:", impiegatoId);
       this.snackBar.open("Errore nell'associazione: ID impiegato non valido", 'OK', { duration: 3000 });
       return;
     }
-  
-    // Verifica anche che il codUff sia corretto
+
     if (!this.data.codUff) {
       console.error("Codice ufficio non valido:", this.data.codUff);
       this.snackBar.open("Errore nell'associazione: Codice ufficio non valido", 'OK', { duration: 3000 });
       return;
     }
-  
-    // Log di controllo del payload
-    const payload = { id: impiegatoId };
-    console.log('Payload inviato:', payload);  // Verifica il payload
-  
-    // Associa l'impiegato all'ufficio
+
     this.impiegatoService.associaImpiegatoAUff(this.data.codUff, impiegatoId).subscribe(
       () => {
         this.snackBar.open('Impiegato associato con successo!', 'OK', { duration: 3000 });
@@ -71,10 +78,8 @@ export class SelezionaImpiegatoDialogComponent implements OnInit {
       }
     );
   }
-  
-  
-  
+
   annulla() {
-    this.dialogRef.close(); // Chiude il dialog senza selezionare nulla
+    this.dialogRef.close();
   }
 }
