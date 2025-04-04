@@ -178,4 +178,50 @@ td {
   padding: 10px;
 }
 
+/* Centraggio del contenuto nel dialog */
+.dialog-content {
+  text-align: center; /* Centra il testo */
+  margin-bottom: 20px; /* Distanza tra la descrizione e il bottone */
+}
+
+/* Styling del bottone "Contatta tramite mail" */
+.contatta-mail-btn {
+  width: 80%; /* Rende il bottone più largo */
+  margin-top: 20px; /* Distanza tra la descrizione e il bottone */
+  display: block; /* Mostra il bottone come un blocco per centrarlo */
+  margin-left: auto;
+  margin-right: auto; /* Centra il bottone orizzontalmente */
+}
+
+/* Success message */
+.success-message {
+  margin-top: 10px;
+  color: green;
+  font-weight: bold;
+}
+
+
+/* Bottone "Contatta tramite mail" come link */
+.contatta-mail-btn {
+  width: 80%; /* Rende il bottone più largo */
+  margin-top: 20px; /* Distanza tra la descrizione e il bottone */
+  display: block; /* Mostra il bottone come un blocco per centrarlo */
+  margin-left: auto;
+  margin-right: auto; /* Centra il bottone orizzontalmente */
+  text-align: center;
+  color: #1976D2; /* Colore del link (blu) */
+  text-decoration: none; /* Rimuove la sottolineatura del link */
+  padding: 10px;
+  border: 1px solid #1976D2;
+  border-radius: 5px;
+}
+
+/* Cambia colore quando l'utente passa sopra con il mouse */
+.contatta-mail-btn:hover {
+  background-color: #1976D2;
+  color: white;
+}
+
+
+
  

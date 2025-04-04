@@ -1,26 +1,13 @@
 <h1 mat-dialog-title>Seleziona uno o più Impiegati</h1>
-
 <mat-dialog-content>
-  <ng-container *ngIf="impiegati.length > 0; else noImpiegati">
-    <mat-selection-list [(ngModel)]="selectedImpiegati" aria-label="Lista impiegati">
-      <mat-list-option *ngFor="let impiegato of impiegati" [value]="impiegato.id">
-        {{ impiegato.id }} - {{ impiegato.nome }} {{ impiegato.cognome }}
-      </mat-list-option>
-    </mat-selection-list>
-  </ng-container>
-
-  <ng-template #noImpiegati>
-    <p style="color: gray; text-align: center;">Nessun impiegato disponibile</p>
-  </ng-template>
+  <mat-selection-list [(ngModel)]="selectedImpiegati">
+    <mat-list-option *ngFor="let impiegato of impiegati" [value]="impiegato.id">
+      {{ impiegato.id }} - {{ impiegato.nome }} {{ impiegato.cognome }}
+    </mat-list-option>
+  </mat-selection-list>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="annulla()">Annulla</button>
-  <button 
-    mat-button 
-    color="primary" 
-    [disabled]="selectedImpiegati.length === 0" 
-    (click)="salvaAssociazione()">
-    Conferma
-  </button>
+  <button mat-button [disabled]="selectedImpiegati.length === 0" (click)="salvaAssociazione()">Conferma</button>
 </mat-dialog-actions>

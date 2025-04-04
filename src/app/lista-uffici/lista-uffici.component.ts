@@ -14,27 +14,27 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./lista-uffici.component.css']
 })
 export class ListaUfficiComponent implements OnInit {
-  currentView: string = 'uffici'; 
+  currentView: string = 'uffici';
   displayedColumns: string[] = ['codUff', 'nomeUff', 'sede', 'indirizzo', 'numInterno', 'action'];
   dataSource = new MatTableDataSource<any>([]);
-  displayedColumns2: string[] = ['codUff', 'nomeUff', 'Conteggio_dipendenti']; 
+  displayedColumns2: string[] = ['codUff', 'nomeUff', 'Conteggio_dipendenti'];
   dataSourceConteggio = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('dialogTemplate') dialogTemplate: any;
 
-  constructor(private http: HttpClient, private ufficioService: UfficioService, public dialog: MatDialog) {}
+  constructor(private http: HttpClient, private ufficioService: UfficioService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getUffici();  
+    this.getUffici();
   }
 
   getUffici() {
     this.http.get<any>('http://localhost:3000/ufficio').subscribe(
       (response) => {
         if (response && response.data) {
-          this.dataSource = new MatTableDataSource(response.data);  
+          this.dataSource = new MatTableDataSource(response.data);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
@@ -58,9 +58,9 @@ export class ListaUfficiComponent implements OnInit {
   }
 
   setView(view: string) {
-    this.currentView = view;  
+    this.currentView = view;
     if (view === 'dipendenti-per-ufficio') {
-      this.getConteggioDipendentiRisultato();  
+      this.getConteggioDipendentiRisultato();
     }
   }
 
@@ -82,17 +82,46 @@ export class ListaUfficiComponent implements OnInit {
       'Cybersecurity': "L'Ufficio Cybersecurity protegge i sistemi aziendali da minacce informatiche.",
       'Marketing': "L'Ufficio Marketing promuove il brand e analizza il mercato."
     };
-    
+
     const descrizione = descrizioniUffici[ufficio];
-    
+
     if (descrizione) {
-      this.dialog.open(this.dialogTemplate, {
+      const dialogRef = this.dialog.open(this.dialogTemplate, {
         width: '600px',
         height: '500px',
         data: { titolo: ufficio, descrizione }
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'emailSent') {
+          console.log(`Email inviata all'ufficio ${ufficio}`);
+        }
       });
     } else {
       console.error(`Descrizione non trovata per l'ufficio: ${ufficio}`);
     }
   }
+
+  generateMailtoLink(ufficio: string): string {
+    const destinatari: { [key: string]: string } = {
+      'Risorse Umane': 'HR@expriviaaa.com',
+      'Ufficio Tecnico': 'IT@expriviaaa.com',
+      'Cybersecurity': 'cybersecurity@expriviaaa.com',
+      'Marketing': 'marketing@expriviaaa.com'
+    };
+
+    // Recupera l'indirizzo email corrispondente all'ufficio
+    const email = destinatari[ufficio] || 'contatto@azienda.com';
+
+    // Prepara l'oggetto e il corpo del messaggio
+    const oggetto = `Contatto dal gestionale: ${ufficio}`;
+    const corpo = `Gentile team ${ufficio},\n\nVorrei entrare in contatto per ulteriori informazioni.\n\nCordiali saluti`;
+
+    // Crea il link mailto
+    return `mailto:${email}?subject=${encodeURIComponent(oggetto)}&body=${encodeURIComponent(corpo)}`;
+  }
+
+
+
+
 }

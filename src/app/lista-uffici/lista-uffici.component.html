@@ -112,6 +112,30 @@
         </div>
       </div>
 
+      <!-- sezione mail -->
+      <ng-template #dialogTemplate let-data let-dialogRef="dialogRef">
+        <h1 mat-dialog-title>{{ data.titolo }}</h1>
+        
+        <div mat-dialog-content class="dialog-content">
+          <p>{{ data.descrizione }}</p>
+          
+          <!-- Bottone per contattare tramite mail -->
+          <a [href]="generateMailtoLink(data.titolo)" mat-button color="primary" class="contatta-mail-btn">
+            Contatta tramite mail
+          </a>
+      
+        
+        </div>
+        
+        <div mat-dialog-actions align="center">
+          <button mat-button mat-dialog-close>Chiudi</button>
+        </div>
+      </ng-template>
+      
+      
+      
+      
+
 
       <ng-template #dialogTemplate let-data>
   <h1 mat-dialog-title>{{ data.titolo }}</h1>
