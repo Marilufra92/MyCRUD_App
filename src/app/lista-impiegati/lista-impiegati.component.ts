@@ -7,6 +7,22 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CoreService } from '../core/core.service';
 import { AggModImpComponent } from '../agg-mod-imp/agg-mod-imp.component';
 
+// 1. Definizione dell'interfaccia Impiegato
+interface Impiegato {
+  id: number;
+  nome: string;
+  cognome: string;
+  email?: string;
+  datadinascita?: string;
+  genere?: string;
+  istruzione?: string;
+  azienda?: string;
+  esperienza?: string;
+  ral?: string;
+  sede?: string; // Sede potrebbe essere una stringa separata da virgole
+  sedi?: string; // Assumiamo che 'sedi' possa essere una stringa separata da virgole
+}
+
 @Component({
   selector: 'app-lista-impiegati',
   standalone: false,
@@ -16,9 +32,8 @@ import { AggModImpComponent } from '../agg-mod-imp/agg-mod-imp.component';
 export class ListaImpiegatiComponent implements OnInit {
 
   currentView: string = 'impiegati';
-  
 
-  // tabella-colonne VIEW 1
+  // Tabella-colonne VIEW 1
   displayedColumns: string[] = [
     'id',
     'nome',
@@ -35,20 +50,17 @@ export class ListaImpiegatiComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   nascondiColonna = true; // Imposta a false per mostrare la colonna
 
-    
-
-  // tabella-colonne VIEW 2    RELAZIONE IMPIEGATO-SEDI
+  // Tabella-colonne VIEW 2 - RELAZIONE IMPIEGATO-SEDI
   displayedColumnsView2: string[] = [
-  'id',
-  'nome',
-  'cognome',
-  'sede'
-];
-dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array vuoto
+    'id',
+    'nome',
+    'cognome',
+    'sede'
+  ];
+  dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array vuoto
 
-@ViewChild(MatPaginator) paginator!: MatPaginator;
-@ViewChild(MatSort) sort!: MatSort;
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private _dialog: MatDialog,
@@ -60,18 +72,19 @@ dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array v
     this.getListaImpiegati();
   }
 
-
+  // Apre il modulo per aggiungere/modificare un impiegato
   openAggModImpForm() {
     const dialogRef = this._dialog.open(AggModImpComponent);
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
-          this.getListaImpiegati();
+          this.getListaImpiegati(); // Ricarica la lista degli impiegati dopo la modifica
         }
       },
     });
   }
 
+  // Recupera la lista di tutti gli impiegati
   getListaImpiegati() {
     this._impService.getListaImpiegatiTot().subscribe({
       next: (res) => {
@@ -104,6 +117,7 @@ dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array v
     return correctedDate.toISOString(); // Ritorna nel formato ISO
   }
 
+  // Funzione per applicare il filtro nella tabella
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -113,16 +127,18 @@ dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array v
     }
   }
 
+  // Elimina un impiegato
   eliminaImpiegato(id: number) {
     this._impService.eliminaImpiegato(id).subscribe({
       next: (res) => {
         this._coreService.openSnackBar('Impiegato eliminato!', 'OK');
-        this.getListaImpiegati();
+        this.getListaImpiegati(); // Ricarica la lista dopo l'eliminazione
       },
       error: console.log,
     });
   }
 
+  // Apre il modulo di modifica impiegato
   apriModForm(data: any) {
     const dialogRef = this._dialog.open(AggModImpComponent, {
       data,
@@ -131,13 +147,13 @@ dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array v
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
-          this.getListaImpiegati();
+          this.getListaImpiegati(); // Ricarica la lista dopo la modifica
         }
       },
     });
   }
 
-  // cambia vista tra "impiegati" e "uffici"
+  // Cambia vista tra "impiegati" e "uffici"
   setView(view: string) {
     this.currentView = view;
     if (view === 'impiegati-sedi') {
@@ -147,30 +163,37 @@ dataSourceView2 = new MatTableDataSource<any>([]); // Inizializza con un array v
     }
   }
 
-  // ottiene i dati della relazione impiegato-sede
+  // Ottiene i dati della relazione impiegato-sede
   getRelazioneImpiegatoSede() {
     this._impService.getImpiegatiSedi().subscribe({
       next: (res) => {
         console.log("Risposta completa ricevuta per impiegati-sedi:", res);
-  
         if (res && res.data && Array.isArray(res.data)) {
-          this.dataSourceView2.data = res.data; // Assegna direttamente i dati
+          const updatedData = res.data.map((impiegato: Impiegato) => {
+            
+            const sediAssociati = impiegato.sedi && typeof impiegato.sedi === 'string' 
+              ? impiegato.sedi // Mantenere la stringa separata da virgole
+              : 'Non associato'; // Se 'sedi' non è presente, mostriamo 'Non associato'
+            
+            return {
+              ...impiegato,
+              sede: sediAssociati // Ora 'sedi' è una stringa separata da virgole
+            };
+          });
+  
+          // Aggiorna il dataSource con i nuovi dati
+          this.dataSourceView2.data = updatedData;
           this.dataSourceView2.sort = this.sort;
           this.dataSourceView2.paginator = this.paginator;
         } else {
-          console.error("Errore: i dati ricevuti non sono validi", res);
+          console.error("Errore nei dati ricevuti:", res);
         }
       },
       error: (err) => {
-        console.error("Errore nel recupero della relazione impiegato-sede:", err);
+        console.error("Errore nel recupero dei dati:", err);
       }
     });
   }
   
   
 }
-  
-
-  
-
-

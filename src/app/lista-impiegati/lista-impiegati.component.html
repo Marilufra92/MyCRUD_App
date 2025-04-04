@@ -121,15 +121,14 @@
               </tr>
             </table>
 
-            
+
           </div>
         </div>
       </div>
 
+  
       <!-- VIEW 2: Relazione Impiegato-Sede -->
-
       <div *ngSwitchCase="'impiegati-sedi'">
-
         <div class="main-body">
           <mat-form-field>
             <mat-label>Filter</mat-label>
@@ -158,11 +157,20 @@
                 <td mat-cell *matCellDef="let row"> {{row.cognome}} </td>
               </ng-container>
 
-              <!-- Sede -->
+      
+
+              <!-- Sede (Visualizza più sedi separate da virgola) -->
               <ng-container matColumnDef="sede">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sede </th>
-                <td mat-cell *matCellDef="let row"> {{row.sede}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sedi </th>
+                <td mat-cell *matCellDef="let row">
+                  <!-- Verifica se la colonna "sede" è una stringa e contiene delle sedi separate da virgola -->
+                  <span *ngIf="row.sede && row.sede.length > 0">
+                    {{ row.sede }} <!-- Mostra la stringa della sede -->
+                  </span>
+                  <span *ngIf="!row.sede || row.sede.length === 0">Non associato</span>
+                </td>
               </ng-container>
+
 
               <tr mat-header-row *matHeaderRowDef="displayedColumnsView2"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumnsView2;"></tr>
@@ -172,12 +180,10 @@
                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
               </tr>
             </mat-table>
-
-            
           </div>
         </div>
-
       </div>
+
     </ng-container>
   </mat-sidenav-content>
 
