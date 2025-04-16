@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Info Impiegati nell'ufficio</h2>
+
+<mat-dialog-content *ngIf="data.impiegati?.length > 0; else noData">
+    <div *ngFor="let impiegato of data.impiegati">
+        <strong>{{ impiegato.nome }} {{ impiegato.cognome }}</strong><br>
+        <span>{{ impiegato.email }}</span>
+        <mat-divider class="my-2"></mat-divider>
+    </div>
+</mat-dialog-content>
+
+<ng-template #noData>
+    <p>Nessun impiegato associato a questo ufficio.</p>
+</ng-template>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="primary">Chiudi</button>
+</mat-dialog-actions>

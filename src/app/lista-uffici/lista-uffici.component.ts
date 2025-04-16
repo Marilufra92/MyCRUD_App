@@ -6,6 +6,8 @@ import { UfficioService } from '../services/ufficio.service';
 import { SelezionaImpiegatoDialogComponent } from '../seleziona-impiegato-dialog/seleziona-impiegato-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { DettaglioImpiegatiDialogComponent } from '../dettaglio-impiegati-dialog/dettaglio-impiegati-dialog.component';
+
 
 @Component({
   selector: 'app-lista-uffici',
@@ -122,6 +124,25 @@ export class ListaUfficiComponent implements OnInit {
   }
 
 
+  openImpiegatiDialog(row: any): void {
+    this.ufficioService.getImpiegatiByUfficio(row.codUff).subscribe(
+      (res) => {
+        this.dialog.open(DettaglioImpiegatiDialogComponent, {
+          width: '700px',
+          data: {
+            codUff: row.codUff,
+            nomeUff: row.nomeUff,  
+            impiegati: res.data     
+          }
+        });
+      },
+      (err) => {
+        console.error('Errore nel recupero degli impiegati:', err);
+      }
+    );
+  }
+  
+  
 
 
 }

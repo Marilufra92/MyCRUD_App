@@ -33,4 +33,21 @@ export class UfficioService {
       })
     );
   }
+
+
+
+// Ottieni tutti gli impiegati associati a un determinato ufficio
+getImpiegatiByUfficio(codUff: string): Observable<any> {
+  const url = `http://localhost:3000/ufficio/${codUff}/impiegati`;
+
+  return this.http.get(url).pipe(
+    tap(data => console.log(`Impiegati per l'ufficio ${codUff}:`, data)),
+    catchError(err => {
+      console.error(`Errore nel recupero degli impiegati per l'ufficio ${codUff}:`, err);
+      return of([]);
+    })
+  );
+}
+
+
 }

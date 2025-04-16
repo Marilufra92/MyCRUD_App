@@ -128,7 +128,7 @@
         </div>
         
         <div mat-dialog-actions align="center">
-          <button mat-button mat-dialog-close>Chiudi</button>
+          <button mat-button mat-dialog-close color="primary">Chiudi</button>
         </div>
       </ng-template>
       
@@ -143,7 +143,7 @@
     <p>{{ data.descrizione }}</p>
   </div>
   <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Chiudi</button>
+    <button mat-button mat-dialog-close color="primary">Chiudi</button>
   </div>
 </ng-template>
 
@@ -161,8 +161,13 @@
             </ng-container>
             <ng-container matColumnDef="Conteggio_dipendenti">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero Dipendenti </th>
-              <td mat-cell *matCellDef="let row"> {{ row.Conteggio_dipendenti }} </td>
+              <td mat-cell *matCellDef="let row">
+                <button mat-button color="primary" (click)="openImpiegatiDialog(row)">
+                  {{ row.Conteggio_dipendenti }}
+                </button>
+              </td>
             </ng-container>
+            
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr> 

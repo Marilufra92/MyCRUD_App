@@ -38,6 +38,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { SelezionaImpiegatoDialogComponent } from './seleziona-impiegato-dialog/seleziona-impiegato-dialog.component';
+import { DettaglioImpiegatiDialogComponent } from './dettaglio-impiegati-dialog/dettaglio-impiegati-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,13 +47,16 @@ import { SelezionaImpiegatoDialogComponent } from './seleziona-impiegato-dialog/
     ListaImpiegatiComponent,
     ListaUfficiComponent,
     HomeComponent,
-    SelezionaImpiegatoDialogComponent
+    SelezionaImpiegatoDialogComponent,
+    DettaglioImpiegatiDialogComponent
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    
 
     // Angular Material
     MatToolbarModule,
