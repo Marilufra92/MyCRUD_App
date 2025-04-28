@@ -52,25 +52,22 @@ export class SelezionaImpiegatoDialogComponent implements OnInit {
       this.snackBar.open('Seleziona almeno un impiegato', 'OK', { duration: 3000 });
       return;
     }
-
-    const impiegatoId = this.selectedImpiegati[0]; 
-
-    if (!impiegatoId) {
-      console.error("ID impiegato non valido:", impiegatoId);
-      this.snackBar.open("Errore nell'associazione: ID impiegato non valido", 'OK', { duration: 3000 });
+  
+    const impiegatiSelezionati = this.selectedImpiegati;  // array di impiegati
+  
+    if (!impiegatiSelezionati || !this.data.codUff) {
+      this.snackBar.open("Errore nell'associazione: dati non validi", 'OK', { duration: 3000 });
       return;
     }
-
-    if (!this.data.codUff) {
-      console.error("Codice ufficio non valido:", this.data.codUff);
-      this.snackBar.open("Errore nell'associazione: Codice ufficio non valido", 'OK', { duration: 3000 });
-      return;
-    }
-
-    this.impiegatoService.associaImpiegatoAUff(this.data.codUff, impiegatoId).subscribe(
+  
+    this.impiegatoService.associaImpiegatiAUff(this.data.codUff, impiegatiSelezionati).subscribe(
       () => {
-        this.snackBar.open('Impiegato associato con successo!', 'OK', { duration: 3000 });
-        this.dialogRef.close(impiegatoId);
+        this.snackBar.open('Impiegati associati con successo!', 'OK', { duration: 3000 });
+  
+        // Rimuove gli impiegati associati dalla lista
+        this.impiegati = this.impiegati.filter((impiegato) => !impiegatiSelezionati.includes(impiegato.id));
+  
+        this.dialogRef.close(impiegatiSelezionati);
       },
       (error) => {
         console.error("Errore nell'associazione:", error);
@@ -78,6 +75,8 @@ export class SelezionaImpiegatoDialogComponent implements OnInit {
       }
     );
   }
+  
+  
 
   annulla() {
     this.dialogRef.close();

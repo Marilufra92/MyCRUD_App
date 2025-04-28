@@ -11,7 +11,7 @@ export class UfficioService {
 
   constructor(private http: HttpClient) { }
 
-  // Associa un impiegato a un ufficio (ora invia il body corretto)
+  // Associa un impiegato a un ufficio 
   associaImpiegatoAUfficio(codUff: string, impiegatoId: string): Observable<any> {
     return this.http.post<any>(`${this.ufficioUrl}/${codUff}/associa-impiegato`, { id: impiegatoId }).pipe(
       tap(response => console.log('Impiegato associato:', response)),
@@ -21,7 +21,7 @@ export class UfficioService {
       })
     );
   }
-  
+
 
   //  Ottieni il conteggio dei dipendenti dal backend
   getCountDip(): Observable<any> {
@@ -36,18 +36,18 @@ export class UfficioService {
 
 
 
-// Ottieni tutti gli impiegati associati a un determinato ufficio
-getImpiegatiByUfficio(codUff: string): Observable<any> {
-  const url = `http://localhost:3000/ufficio/${codUff}/impiegati`;
+  // Ottieni tutti gli impiegati associati a un determinato ufficio
+  getImpiegatiByUfficio(codUff: string): Observable<any> {
+    const url = `http://localhost:3000/ufficio/${codUff}/impiegati`;
 
-  return this.http.get(url).pipe(
-    tap(data => console.log(`Impiegati per l'ufficio ${codUff}:`, data)),
-    catchError(err => {
-      console.error(`Errore nel recupero degli impiegati per l'ufficio ${codUff}:`, err);
-      return of([]);
-    })
-  );
-}
+    return this.http.get(url).pipe(
+      tap(data => console.log(`Impiegati per l'ufficio ${codUff}:`, data)),
+      catchError(err => {
+        console.error(`Errore nel recupero degli impiegati per l'ufficio ${codUff}:`, err);
+        return of([]);
+      })
+    );
+  }
 
 
 }

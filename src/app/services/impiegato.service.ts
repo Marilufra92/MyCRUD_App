@@ -12,7 +12,6 @@ export class ImpiegatoService {
   private ufficioUrl = 'http://localhost:3000/ufficio';
   private impiegatiSediUrl = 'http://localhost:3000/impiegati-sedi';
 
-
   constructor(private _http: HttpClient) {}
 
   // Aggiungi un nuovo impiegato
@@ -63,30 +62,37 @@ export class ImpiegatoService {
     );
   }
 
+  // Funzione per associare un impiegato a un ufficio (per un solo impiegato)
+  associaImpiegatoAUff(codUff: string, impiegatoId: string): Observable<any> {
+    const url = `${this.ufficioUrl}/${codUff}/associa-impiegato`;
 
-  // Funzione per associare un impiegato a un ufficio
-associaImpiegatoAUff(codUff: string, impiegatoId: string): Observable<any> {
-  const url = `${this.ufficioUrl}/${codUff}/associa-impiegato`;
+    const payload = { id: impiegatoId };
 
-  const payload = { id: impiegatoId };
-  
+    return this._http.post(url, payload, {
+      headers: { 'Content-Type': 'application/json' }
+    }).pipe(
+      tap(() => console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`)),
+      catchError(err => {
+        console.error("Errore nell'associazione dell'impiegato:", err);
+        return of({ error: "Errore nell'associazione dell'impiegato" });
+      })
+    );
+  }
 
-  /* console.log('Invio dei dati al server:', payload);  // Aggiungi un log per vedere i dati
-  console.log('ID impiegato:', impiegatoId); */
+  // Funzione per associare più impiegati a un ufficio
+  associaImpiegatiAUff(codUff: string, impiegatiIds: string[]): Observable<any> {
+    const url = `${this.ufficioUrl}/${codUff}/associa-impiegati`;  // Endpoint aggiornato per più impiegati
 
-  return this._http.post(url, payload, {
-    headers: { 'Content-Type': 'application/json' }
-  }).pipe(
-    tap(() => console.log(`Impiegato ${impiegatoId} associato all'ufficio ${codUff}`)),
-    catchError(err => {
-      console.error("Errore nell'associazione dell'impiegato:", err);
-      return of({ error: "Errore nell'associazione dell'impiegato" });
-    })
-  );
-}
+    const payload = { impiegatiIds: impiegatiIds };  // Array di ID impiegati
 
-
-
-
-  
+    return this._http.post(url, payload, {
+      headers: { 'Content-Type': 'application/json' }
+    }).pipe(
+      tap(() => console.log(`Impiegati associati all'ufficio ${codUff}: ${impiegatiIds.join(', ')}`)),
+      catchError(err => {
+        console.error("Errore nell'associazione degli impiegati:", err);
+        return of({ error: "Errore nell'associazione degli impiegati" });
+      })
+    );
+  }
 }
