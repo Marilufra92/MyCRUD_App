@@ -62,7 +62,7 @@ export class ImpiegatoService {
     );
   }
 
-  // Funzione per associare un impiegato a un ufficio (per un solo impiegato)
+  // Funzione per associare UN impiegato ad un ufficio  
   associaImpiegatoAUff(codUff: string, impiegatoId: string): Observable<any> {
     const url = `${this.ufficioUrl}/${codUff}/associa-impiegato`;
 
@@ -77,22 +77,22 @@ export class ImpiegatoService {
         return of({ error: "Errore nell'associazione dell'impiegato" });
       })
     );
-  }
+  }   
 
-  // Funzione per associare più impiegati a un ufficio
-  associaImpiegatiAUff(codUff: string, impiegatiIds: string[]): Observable<any> {
-    const url = `${this.ufficioUrl}/${codUff}/associa-impiegati`;  // Endpoint aggiornato per più impiegati
-
-    const payload = { impiegatiIds: impiegatiIds };  // Array di ID impiegati
-
-    return this._http.post(url, payload, {
-      headers: { 'Content-Type': 'application/json' }
-    }).pipe(
-      tap(() => console.log(`Impiegati associati all'ufficio ${codUff}: ${impiegatiIds.join(', ')}`)),
-      catchError(err => {
-        console.error("Errore nell'associazione degli impiegati:", err);
-        return of({ error: "Errore nell'associazione degli impiegati" });
-      })
-    );
-  }
+    // Funzione per associare PIU impiegati ad un ufficio
+    associaImpiegatiAUff(codUff: string, impiegatiIds: string[]): Observable<any> {
+      const url = `${this.ufficioUrl}/${codUff}/associa-impiegati`;
+      const payload = { impiegatiIds };
+    
+      return this._http.post(url, payload, {
+        headers: { 'Content-Type': 'application/json' }
+      }).pipe(
+        tap(() => console.log(`Impiegati associati all'ufficio ${codUff}: ${impiegatiIds.join(', ')}`)),
+        catchError(err => {
+          console.error("Errore nell'associazione degli impiegati:", err);
+          return of({ error: "Errore nell'associazione degli impiegati" });
+        })
+      );
+    }
+    
 }

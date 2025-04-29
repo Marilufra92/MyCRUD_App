@@ -12,12 +12,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SelezionaImpiegatoDialogComponent implements OnInit {
   impiegati: any[] = [];
   selectedImpiegati: string[] = [];
+  codUff: string = '';
 
   constructor(
     private impiegatoService: ImpiegatoService,
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<SelezionaImpiegatoDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { codUff: string }
+    @Inject(MAT_DIALOG_DATA) public data: { codUff: string },
+    private _impService: ImpiegatoService
   ) { }
 
   ngOnInit(): void {
@@ -47,36 +49,34 @@ export class SelezionaImpiegatoDialogComponent implements OnInit {
     );
   }
 
-  salvaAssociazione() {
-    if (this.selectedImpiegati.length === 0) {
-      this.snackBar.open('Seleziona almeno un impiegato', 'OK', { duration: 3000 });
-      return;
-    }
-  
-    const impiegatiSelezionati = this.selectedImpiegati;  // array di impiegati
-  
-    if (!impiegatiSelezionati || !this.data.codUff) {
-      this.snackBar.open("Errore nell'associazione: dati non validi", 'OK', { duration: 3000 });
-      return;
-    }
-  
-    this.impiegatoService.associaImpiegatiAUff(this.data.codUff, impiegatiSelezionati).subscribe(
-      () => {
-        this.snackBar.open('Impiegati associati con successo!', 'OK', { duration: 3000 });
-  
-        // Rimuove gli impiegati associati dalla lista
-        this.impiegati = this.impiegati.filter((impiegato) => !impiegatiSelezionati.includes(impiegato.id));
-  
-        this.dialogRef.close(impiegatiSelezionati);
-      },
-      (error) => {
-        console.error("Errore nell'associazione:", error);
-        this.snackBar.open("Errore nell'associazione", 'OK', { duration: 3000 });
+  salvaAssociazione(codUff: string, impiegatiIds: string[]) {
+    impiegatiIds.forEach(id => {
+      let successCount = 0;
+let total = this.selectedImpiegati.length;
+
+this.selectedImpiegati.forEach((id, index) => {
+  this.impiegatoService.associaImpiegatoAUff(this.data.codUff, id).subscribe({
+    next: () => {
+      successCount++;
+      if (successCount === total) {
+        this.snackBar.open('Tutti gli impiegati sono stati associati!', 'Chiudi', { duration: 3000 });
+        this.dialogRef.close(true);
       }
-    );
+    },
+    error: (err) => {
+      console.error(`Errore per impiegato ${id}:`, err);
+      if (index === total - 1) {
+        this.snackBar.open('Errore durante alcune associazioni.', 'Chiudi', { duration: 3000 });
+      }
+    }
+  });
+});
+
+    });
   }
-  
-  
+
+
+
 
   annulla() {
     this.dialogRef.close();
