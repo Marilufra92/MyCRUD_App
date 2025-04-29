@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +31,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 
@@ -56,6 +57,7 @@ import { DettaglioImpiegatiDialogComponent } from './dettaglio-impiegati-dialog/
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgxChartsModule,
     
 
     // Angular Material
@@ -79,6 +81,7 @@ import { DettaglioImpiegatiDialogComponent } from './dettaglio-impiegati-dialog/
     FormsModule,
     MatCardModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],  // Aggiungi questa riga
   providers: [
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),

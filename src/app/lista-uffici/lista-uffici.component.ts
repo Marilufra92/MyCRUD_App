@@ -21,10 +21,14 @@ export class ListaUfficiComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   displayedColumns2: string[] = ['codUff', 'nomeUff', 'Conteggio_dipendenti'];
   dataSourceConteggio = new MatTableDataSource<any>([]);
+  chartData: any[] = [];
+
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('dialogTemplate') dialogTemplate: any;
+
 
   constructor(private http: HttpClient, private ufficioService: UfficioService, public dialog: MatDialog) { }
 
@@ -66,16 +70,24 @@ export class ListaUfficiComponent implements OnInit {
     }
   }
 
-  getConteggioDipendentiRisultato() {
-    this.ufficioService.getCountDip().subscribe({
-      next: (res) => {
-        if (res && res.data) {
-          this.dataSourceConteggio = new MatTableDataSource(res.data);
-        }
-      },
-      error: (err) => console.error('Errore nel recupero del conteggio dipendenti:', err)
-    });
-  }
+    // Metodo per ottenere il conteggio dei dipendenti
+    getConteggioDipendentiRisultato() {
+      this.ufficioService.getCountDip().subscribe({
+        next: (res) => {
+          if (res && res.data) {
+            this.dataSourceConteggio = new MatTableDataSource(res.data);
+  
+            // Popola chartData per il grafico a barre (verticale)
+            this.chartData = res.data.map((row: any) => ({
+              name: row.nomeUff,   // Nome dell'ufficio
+              value: row.Conteggio_dipendenti  // Numero di dipendenti
+            }));
+          }
+        },
+        error: (err) => console.error('Errore nel recupero del conteggio dipendenti:', err)
+      });
+    }
+
 
   onCardClick(ufficio: string) {
     const descrizioniUffici: { [key: string]: string } = {
