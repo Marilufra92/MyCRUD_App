@@ -1,18 +1,25 @@
 <h2 mat-dialog-title>Impiegati nell'ufficio {{ data.nomeUff }} </h2>
 
-<mat-dialog-content *ngIf="data.impiegati?.length > 0; else noData">
-    <div *ngFor="let impiegato of data.impiegati">
-      <div><strong>{{impiegato.id}} {{ impiegato.nome }} {{ impiegato.cognome }}</strong></div>
-      <div>{{ impiegato.email }}</div>
-      <mat-divider></mat-divider>
+<mat-dialog-content *ngIf="impiegati.length > 0; else noData">
+
+  <div *ngFor="let impiegato of impiegati" class="impiegato-entry">
+    <div class="impiegato-top-row">
+      <strong>{{ impiegato.id }} {{ impiegato.nome }} {{ impiegato.cognome }}</strong>
+      <button mat-icon-button class="remove-button" color="warn" aria-label="Disassocia" (click)="disassociaImpiegato(impiegato.id)">
+        <mat-icon>remove</mat-icon>
+      </button>
     </div>
-  </mat-dialog-content>
+    <div class="impiegato-email">{{ impiegato.email }}</div>
+    <mat-divider></mat-divider>
+  </div>
   
 
+</mat-dialog-content>
+
 <ng-template #noData>
-    <p>Nessun impiegato associato a questo ufficio.</p>
+  <p>Nessun impiegato associato a questo ufficio.</p>
 </ng-template>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close color="primary">Chiudi</button>
+  <button mat-button mat-dialog-close color="primary">Chiudi</button>
 </mat-dialog-actions>

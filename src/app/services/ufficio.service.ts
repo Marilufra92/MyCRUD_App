@@ -22,6 +22,12 @@ export class UfficioService {
     );
   }
 
+// dissocia un impiegato da un ufficio 
+  disassociaImpiegatoDaUfficio(idImpiegato: string) {
+    return this.http.put(`http://localhost:3000/impiegato/${idImpiegato}/disassocia`, {});
+  }
+  
+
 
   //  Ottieni il conteggio dei dipendenti dal backend
   getCountDip(): Observable<any> {
