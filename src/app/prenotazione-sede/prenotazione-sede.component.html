@@ -1,0 +1,22 @@
+<mat-card class="prenotazione-card">
+    <mat-card-title>Prenota la tua postazione in sede</mat-card-title>
+    <mat-card-content>
+      <mat-form-field appearance="fill">
+        <mat-label>Seleziona una data</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="dataPrenotata">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </mat-card-content>
+  
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="confermaPrenotazione()">
+        Prenota
+      </button>
+    </mat-card-actions>
+  
+    <div *ngIf="prenotazioneConfermata" class="conferma-messaggio">
+      Prenotazione confermata per il {{ dataPrenotata | date:'fullDate' }}
+    </div>
+  </mat-card>
+  

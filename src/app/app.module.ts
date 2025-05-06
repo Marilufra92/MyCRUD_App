@@ -40,6 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { SelezionaImpiegatoDialogComponent } from './seleziona-impiegato-dialog/seleziona-impiegato-dialog.component';
 import { DettaglioImpiegatiDialogComponent } from './dettaglio-impiegati-dialog/dettaglio-impiegati-dialog.component';
+import { PrenotazioneSedeComponent } from './prenotazione-sede/prenotazione-sede.component';
 
 @NgModule({
   declarations: [
@@ -49,8 +50,12 @@ import { DettaglioImpiegatiDialogComponent } from './dettaglio-impiegati-dialog/
     ListaUfficiComponent,
     HomeComponent,
     SelezionaImpiegatoDialogComponent,
-    DettaglioImpiegatiDialogComponent
+    DettaglioImpiegatiDialogComponent,
+    PrenotazioneSedeComponent,
     
+    
+
+
   ],
   imports: [
     BrowserModule,
@@ -59,6 +64,8 @@ import { DettaglioImpiegatiDialogComponent } from './dettaglio-impiegati-dialog/
     ReactiveFormsModule,
     NgxChartsModule,
     
+
+
 
     // Angular Material
     MatToolbarModule,
@@ -79,9 +86,10 @@ import { DettaglioImpiegatiDialogComponent } from './dettaglio-impiegati-dialog/
     MatSidenavModule,
     MatListModule,
     FormsModule,
-    MatCardModule
+    MatCardModule,
+
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],  // Aggiungi questa riga
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),

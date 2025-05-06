@@ -8,8 +8,8 @@
       <mat-list-item (click)="setView('impiegati-sedi')" [class.selected]="currentView === 'impiegati-sedi'">
         <mat-icon>business</mat-icon> Relazione Impiegato-Sede
       </mat-list-item>
-      <mat-list-item (click)="setView('')" [class.selected]="currentView === ''"> <!-- da implementare -->
-        <mat-icon>star</mat-icon> View 3
+      <mat-list-item (click)="setView('prenotazione-sede')" [class.selected]="currentView === 'prenotazione-sede'"> 
+        <mat-icon>star</mat-icon> Prenotazione Sede
       </mat-list-item>
       <mat-list-item (click)="setView('')" [class.selected]="currentView === ''"> <!-- da implementare -->
         <mat-icon>settings</mat-icon> View 4
@@ -183,6 +183,12 @@
           </div>
         </div>
       </div>
+      <!-- VIEW 3: Prenotazione Sede -->
+      <div *ngSwitchCase="'prenotazione-sede'">
+      <app-prenotazione-sede></app-prenotazione-sede>
+      </div>
+
+      <!-- VIEW 4: da implementare-->
 
     </ng-container>
   </mat-sidenav-content>
