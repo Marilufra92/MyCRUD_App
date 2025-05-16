@@ -1,5 +1,13 @@
 <h1 class="title">Benvenuto in CrudManager</h1>
+
 <div class="home-container">
-    <img src="https://img.freepik.com/vettori-gratuito/illustrazione-di-concetto-di-processo-di-progettazione_114360-529.jpg?t=st=1739957925~exp=1739961525~hmac=37e62fde0dd8be4f13de4670e0b86a234fc5a483715b74be1cda662c3b18bcf4&w=740" alt="gestionale" class="gestionale">
-    <img src="https://img.freepik.com/vettori-gratuito/ufficio-interno-open-space-design-piatto-illustrazione-vettoriale-uomini-d-affari-che-parlano-nella-sala-conferenze-moderna-della-sala-riunioni_126523-3102.jpg?t=st=1742565178~exp=1742568778~hmac=391afc450fc8ca0c2368a39b619efd58f015754535535f16b972eb8d70689ed5&w=2000" alt="pattern" class="pattern">
+  <img src="https://img.freepik.com/vettori-gratuito/illustrazione-di-concetto-di-processo-di-progettazione_114360-529.jpg?t=st=1739957925~exp=1739961525~hmac=37e62fde0dd8be4f13de4670e0b86a234fc5a483715b74be1cda662c3b18bcf4&w=740" alt="gestionale" class="gestionale">
+  <img src="https://img.freepik.com/vettori-gratuito/ufficio-interno-open-space-design-piatto-illustrazione-vettoriale-uomini-d-affari-che-parlano-nella-sala-conferenze-moderna-della-sala-riunioni_126523-3102.jpg?t=st=1742565178~exp=1742568778~hmac=391afc450fc8ca0c2368a39b619efd58f015754535535f16b972eb8d70689ed5&w=2000" alt="pattern" class="pattern">
+</div>
+
+<!-- Barra dei ruoli in basso -->
+<div class="role-selector">
+  <button mat-raised-button [color]="selectedRole === 'ADMIN' ? 'warn' : ''" (click)="selectRole('ADMIN')">ADMIN</button>
+  <button mat-raised-button [color]="selectedRole === 'VIEWER' ? 'primary' : ''" (click)="selectRole('VIEWER')">VIEWER</button>
+  <button mat-raised-button [color]="selectedRole === 'USER' ? 'primary' : ''" (click)="selectRole('USER')">USER</button>
 </div>

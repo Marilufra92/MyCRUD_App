@@ -94,5 +94,13 @@ export class ImpiegatoService {
         })
       );
     }
+
+
+// Funzione per recuperare i ruoli
+
+   getRuoli(): Observable<any> {
+  return this._http.get<any>('http://localhost:3000/ruoli');
+}
+
     
 }

@@ -1,14 +1,27 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
   standalone: false,
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css'] 
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-   constructor(private http: HttpClient) {}
+  selectedRole: string = 'VIEWER'; // default 
 
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    // Recupera il ruolo salvato al refresh
+    const savedRole = this.authService.getRuolo();
+    this.selectedRole = savedRole;
+  }
+
+  selectRole(role: string): void {
+    this.selectedRole = role;
+    this.authService.setRuolo(role); // aggiorna anche l'AuthService
+    console.log('Ruolo selezionato:', role);
+  }
 }

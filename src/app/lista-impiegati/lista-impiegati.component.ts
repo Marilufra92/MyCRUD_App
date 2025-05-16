@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CoreService } from '../core/core.service';
 import { AggModImpComponent } from '../agg-mod-imp/agg-mod-imp.component';
+import { AuthService } from '../services/auth.service';
 
 // 1. Definizione dell'interfaccia Impiegato
 interface Impiegato {
@@ -19,8 +20,9 @@ interface Impiegato {
   azienda?: string;
   esperienza?: string;
   ral?: string;
-  sede?: string; // Sede potrebbe essere una stringa separata da virgole
-  sedi?: string; // Assumiamo che 'sedi' possa essere una stringa separata da virgole
+  ruolo_id: number;
+  sede?: string;
+  sedi?: string;
 }
 
 @Component({
@@ -45,6 +47,7 @@ export class ListaImpiegatiComponent implements OnInit {
     'azienda',
     'esperienza',
     'ral',
+    'ruolo_id', // Ruolo dell'impiegato
     'action'
   ];
   dataSource!: MatTableDataSource<any>;
@@ -66,6 +69,7 @@ export class ListaImpiegatiComponent implements OnInit {
     private _dialog: MatDialog,
     private _impService: ImpiegatoService,
     private _coreService: CoreService,
+    public authService: AuthService // pubblico per poterlo usare in HTML
   ) { }
 
   ngOnInit(): void {
@@ -92,9 +96,10 @@ export class ListaImpiegatiComponent implements OnInit {
 
         if (res && Array.isArray(res.data)) { // Controlla se "data" è un array
           this.dataSource = new MatTableDataSource(
-            res.data.map((row: { datadinascita: string; }) => ({
+            res.data.map((row: Impiegato) => ({
               ...row,
-              datadinascita: this.correctDate(row.datadinascita) // Corregge la data
+              datadinascita: this.correctDate(row.datadinascita),
+              ruolo: row.ruolo_id
             }))
           );
           this.dataSource.sort = this.sort;
@@ -110,12 +115,13 @@ export class ListaImpiegatiComponent implements OnInit {
   }
 
   // Funzione per correggere la data aggiungendo 1 ora
-  correctDate(date: string): string {
-    if (!date) return '';
+  correctDate(date: string | undefined): string {
+    if (!date) return ''; // Se la data è undefined o null, ritorna una stringa vuota
     let correctedDate = new Date(date);
     correctedDate.setHours(correctedDate.getHours() + 1); // Aggiunge 1 ora
     return correctedDate.toISOString(); // Ritorna nel formato ISO
   }
+
 
   // Funzione per applicare il filtro nella tabella
   applyFilter(event: Event) {
@@ -170,17 +176,17 @@ export class ListaImpiegatiComponent implements OnInit {
         console.log("Risposta completa ricevuta per impiegati-sedi:", res);
         if (res && res.data && Array.isArray(res.data)) {
           const updatedData = res.data.map((impiegato: Impiegato) => {
-            
-            const sediAssociati = impiegato.sedi && typeof impiegato.sedi === 'string' 
+
+            const sediAssociati = impiegato.sedi && typeof impiegato.sedi === 'string'
               ? impiegato.sedi // Mantenere la stringa separata da virgole
               : 'Non associato'; // Se 'sedi' non è presente, mostriamo 'Non associato'
-            
+
             return {
               ...impiegato,
               sede: sediAssociati // Ora 'sedi' è una stringa separata da virgole
             };
           });
-  
+
           // Aggiorna il dataSource con i nuovi dati
           this.dataSourceView2.data = updatedData;
           this.dataSourceView2.sort = this.sort;
@@ -194,6 +200,4 @@ export class ListaImpiegatiComponent implements OnInit {
       }
     });
   }
-  
-  
 }

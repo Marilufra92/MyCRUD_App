@@ -1,10 +1,11 @@
 <mat-sidenav-container class="container">
   <mat-sidenav mode="side" opened class="sidenav">
-    <mat-nav-list>  
+    <mat-nav-list>
       <mat-list-item (click)="setView('uffici')" [class.selected]="currentView === 'uffici'">
         <mat-icon>account_balance</mat-icon> Lista Uffici
       </mat-list-item>
-      <mat-list-item (click)="setView('dipendenti-per-ufficio')" [class.selected]="currentView === 'dipendenti-per-ufficio'">
+      <mat-list-item (click)="setView('dipendenti-per-ufficio')"
+        [class.selected]="currentView === 'dipendenti-per-ufficio'">
         <mat-icon>group</mat-icon> Conteggio Dipendenti
       </mat-list-item>
       <mat-list-item (click)="setView(' ')" [class.selected]="currentView === 'da-implementare1'">
@@ -46,7 +47,7 @@
             <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef> Associa Dipendente </th>
               <td mat-cell *matCellDef="let row">
-                <button mat-icon-button color="primary" (click)="associaImpiegatodaUff(row.codUff)">
+                <button mat-icon-button color="primary" (click)="associaImpiegatodaUff(row.codUff)" *ngIf="canWrite">
                   <mat-icon>add</mat-icon>
                 </button>
               </td>
@@ -55,31 +56,33 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
-          
+
         </div>
 
         <!-- SEZIONE DELLE CARD   -->
         <div class="card-container">
-        
+
           <mat-card class="ufficio-card" (click)="onCardClick('Risorse Umane')">
             <mat-card-header>
               <mat-card-title>Ufficio Risorse Umane</mat-card-title>
             </mat-card-header>
             <div class="iconaUfficio">
-              <img mat-card-image src="https://img.icons8.com/?size=100&id=36m26sAM2RfO&format=png&color=000000" alt="HR">
+              <img mat-card-image src="https://img.icons8.com/?size=100&id=36m26sAM2RfO&format=png&color=000000"
+                alt="HR">
             </div>
             <mat-card-content>
               <p>Gestisce il personale, la formazione e le assunzioni in azienda.</p>
             </mat-card-content>
           </mat-card>
-          
+
 
           <mat-card class="ufficio-card" (click)="onCardClick('Ufficio Tecnico')">
             <mat-card-header>
               <mat-card-title>Ufficio Tecnico</mat-card-title>
             </mat-card-header>
             <div class="iconaUfficio">
-              <img mat-card-image src="https://img.icons8.com/?size=100&id=tGFliXQWsAP5&format=png&color=000000" alt="IT">
+              <img mat-card-image src="https://img.icons8.com/?size=100&id=tGFliXQWsAP5&format=png&color=000000"
+                alt="IT">
             </div>
             <mat-card-content>
               <p>Gestisce l'infrastruttura tecnologica, lo sviluppo software e il supporto tecnico aziendale.</p>
@@ -91,19 +94,22 @@
               <mat-card-title>Cybersecurity</mat-card-title>
             </mat-card-header>
             <div class="iconaUfficio">
-              <img mat-card-image src="https://img.icons8.com/?size=100&id=FbRY9JkBrjiX&format=png&color=000000" alt="CYB">
+              <img mat-card-image src="https://img.icons8.com/?size=100&id=FbRY9JkBrjiX&format=png&color=000000"
+                alt="CYB">
             </div>
             <mat-card-content>
-              <p>Protegge i sistemi aziendali da minacce informatiche, garantendo la sicurezza dei dati e delle reti.</p>
+              <p>Protegge i sistemi aziendali da minacce informatiche, garantendo la sicurezza dei dati e delle reti.
+              </p>
             </mat-card-content>
           </mat-card>
 
           <mat-card class="ufficio-card" (click)="onCardClick('Marketing')">
-            <mat-card-header >
-              <mat-card-title >Ufficio Marketing</mat-card-title>
+            <mat-card-header>
+              <mat-card-title>Ufficio Marketing</mat-card-title>
             </mat-card-header>
             <div class="iconaUfficio">
-              <img mat-card-image src="https://img.icons8.com/?size=100&id=qG05IuQtGU57&format=png&color=000000" alt="MKT">
+              <img mat-card-image src="https://img.icons8.com/?size=100&id=qG05IuQtGU57&format=png&color=000000"
+                alt="MKT">
             </div>
             <mat-card-content>
               <p>Promuove il brand, analizza il mercato e crea strategie di vendita.</p>
@@ -115,42 +121,43 @@
       <!-- sezione mail -->
       <ng-template #dialogTemplate let-data let-dialogRef="dialogRef">
         <h1 mat-dialog-title>{{ data.titolo }}</h1>
-        
+
         <div mat-dialog-content class="dialog-content">
           <p>{{ data.descrizione }}</p>
-          
+
           <!-- Bottone per contattare tramite mail -->
           <a [href]="generateMailtoLink(data.titolo)" mat-button color="primary" class="contatta-mail-btn">
             Contatta tramite mail
           </a>
-      
-        
+
+
         </div>
-        
+
         <div mat-dialog-actions align="center">
           <button mat-button mat-dialog-close color="primary">Chiudi</button>
         </div>
       </ng-template>
-      
-      
-      
-      
+
+
+
+
 
 
       <ng-template #dialogTemplate let-data>
-  <h1 mat-dialog-title>{{ data.titolo }}</h1>
-  <div mat-dialog-content>
-    <p>{{ data.descrizione }}</p>
-  </div>
-  <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close color="primary">Chiudi</button>
-  </div>
-</ng-template>
+        <h1 mat-dialog-title>{{ data.titolo }}</h1>
+        <div mat-dialog-content>
+          <p>{{ data.descrizione }}</p>
+        </div>
+        <div mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close color="primary">Chiudi</button>
+        </div>
+      </ng-template>
 
       <!-- VIEW 2: Conteggio Dipendenti per Ufficio -->
       <div *ngSwitchCase="'dipendenti-per-ufficio'">
         <div class="table-container">
-          <mat-table *ngIf="dataSourceConteggio.data.length > 0" [dataSource]="dataSourceConteggio" matSort class="mat-elevation-z8">
+          <mat-table *ngIf="dataSourceConteggio.data.length > 0" [dataSource]="dataSourceConteggio" matSort
+            class="mat-elevation-z8">
             <ng-container matColumnDef="codUff">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Codice Ufficio </th>
               <td mat-cell *matCellDef="let row"> {{ row.codUff }} </td>
@@ -162,35 +169,31 @@
             <ng-container matColumnDef="Conteggio_dipendenti">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero Dipendenti </th>
               <td mat-cell *matCellDef="let row">
-                <button mat-button color="primary" (click)="openImpiegatiDialog(row)">
+                <button 
+                  mat-button color="primary"
+                  [disabled]="!authService.canAccessImpiegati()" 
+                  (click)="openImpiegatiDialog(row)">
                   {{ row.Conteggio_dipendenti }}
                 </button>
               </td>
             </ng-container>
-            
+
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr> 
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
           </mat-table>
-          
+
         </div>
 
-         <!-- GRAFICO A BARRA VERTICALE (ISTOGRAMMA) -->
-  <div *ngIf="chartData.length > 0" style="margin-top: 40px; text-align: center;">
-    <h2>Distribuzione dei dipendenti per ufficio</h2>
-    
-    <ngx-charts-bar-vertical
-      [view]="[700, 400]"
-      [results]="chartData"
-      [xAxis]="true"
-      [yAxis]="true"
-      [legend]="true"
-      [showDataLabel]="true"
-      [roundEdges]="true"
-      [colorScheme]="{ domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#1f77b4', '#ff7f0e'] }"
-    >
-    </ngx-charts-bar-vertical>
-  </div>
+        <!-- GRAFICO A BARRA VERTICALE (ISTOGRAMMA) -->
+        <div *ngIf="chartData.length > 0" style="margin-top: 40px; text-align: center;">
+          <h2>Distribuzione dei dipendenti per ufficio</h2>
+
+          <ngx-charts-bar-vertical [view]="[700, 400]" [results]="chartData" [xAxis]="true" [yAxis]="true"
+            [legend]="true" [showDataLabel]="true" [roundEdges]="true"
+            [colorScheme]="{ domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#1f77b4', '#ff7f0e'] }">
+          </ngx-charts-bar-vertical>
+        </div>
       </div>
 
     </ng-container>

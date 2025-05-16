@@ -7,7 +7,7 @@ import { SelezionaImpiegatoDialogComponent } from '../seleziona-impiegato-dialog
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { DettaglioImpiegatiDialogComponent } from '../dettaglio-impiegati-dialog/dettaglio-impiegati-dialog.component';
-
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-lista-uffici',
@@ -23,17 +23,32 @@ export class ListaUfficiComponent implements OnInit {
   dataSourceConteggio = new MatTableDataSource<any>([]);
   chartData: any[] = [];
 
-
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('dialogTemplate') dialogTemplate: any;
 
+  // Permessi in base al ruolo attivo
+  canEdit = false;
+  canDelete = false;
+  canWrite = false;
+  
 
-  constructor(private http: HttpClient, private ufficioService: UfficioService, public dialog: MatDialog) { }
+  constructor(
+    private http: HttpClient,
+    private ufficioService: UfficioService,
+    public dialog: MatDialog,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.setPermissions();
     this.getUffici();
+  }
+
+  setPermissions() {
+    this.canEdit = this.authService.canEdit();
+    this.canDelete = this.authService.canDelete();
+    this.canWrite = this.authService.canWrite();
   }
 
   getUffici() {
@@ -50,6 +65,8 @@ export class ListaUfficiComponent implements OnInit {
   }
 
   associaImpiegatodaUff(codUff: string) {
+    if (!this.canEdit) return;
+
     const dialogRef = this.dialog.open(SelezionaImpiegatoDialogComponent, {
       width: '400px',
       data: { codUff }
@@ -70,24 +87,20 @@ export class ListaUfficiComponent implements OnInit {
     }
   }
 
-    // Metodo per ottenere il conteggio dei dipendenti
-    getConteggioDipendentiRisultato() {
-      this.ufficioService.getCountDip().subscribe({
-        next: (res) => {
-          if (res && res.data) {
-            this.dataSourceConteggio = new MatTableDataSource(res.data);
-  
-            // Popola chartData per il grafico a barre (verticale)
-            this.chartData = res.data.map((row: any) => ({
-              name: row.nomeUff,   // Nome dell'ufficio
-              value: row.Conteggio_dipendenti  // Numero di dipendenti
-            }));
-          }
-        },
-        error: (err) => console.error('Errore nel recupero del conteggio dipendenti:', err)
-      });
-    }
-
+  getConteggioDipendentiRisultato() {
+    this.ufficioService.getCountDip().subscribe({
+      next: (res) => {
+        if (res && res.data) {
+          this.dataSourceConteggio = new MatTableDataSource(res.data);
+          this.chartData = res.data.map((row: any) => ({
+            name: row.nomeUff,
+            value: row.Conteggio_dipendenti
+          }));
+        }
+      },
+      error: (err) => console.error('Errore nel recupero del conteggio dipendenti:', err)
+    });
+  }
 
   onCardClick(ufficio: string) {
     const descrizioniUffici: { [key: string]: string } = {
@@ -124,27 +137,23 @@ export class ListaUfficiComponent implements OnInit {
       'Marketing': 'marketing@expriviaaa.com'
     };
 
-    // Recupera l'indirizzo email corrispondente all'ufficio
     const email = destinatari[ufficio] || 'contatto@azienda.com';
-
-    // Prepara l'oggetto e il corpo del messaggio
     const oggetto = `Contatto dal gestionale: ${ufficio}`;
     const corpo = `Gentile team ${ufficio},\n\nVorrei entrare in contatto per ulteriori informazioni.\n\nCordiali saluti`;
 
-    // Crea il link mailto
     return `mailto:${email}?subject=${encodeURIComponent(oggetto)}&body=${encodeURIComponent(corpo)}`;
   }
 
-
   openImpiegatiDialog(row: any): void {
+    
     this.ufficioService.getImpiegatiByUfficio(row.codUff).subscribe(
       (res) => {
         this.dialog.open(DettaglioImpiegatiDialogComponent, {
           width: '700px',
           data: {
             codUff: row.codUff,
-            nomeUff: row.nomeUff,  
-            impiegati: res.data     
+            nomeUff: row.nomeUff,
+            impiegati: res.data
           }
         });
       },
@@ -153,8 +162,4 @@ export class ListaUfficiComponent implements OnInit {
       }
     );
   }
-  
-  
-
-
 }

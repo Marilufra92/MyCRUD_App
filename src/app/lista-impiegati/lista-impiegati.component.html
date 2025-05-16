@@ -8,7 +8,7 @@
       <mat-list-item (click)="setView('impiegati-sedi')" [class.selected]="currentView === 'impiegati-sedi'">
         <mat-icon>business</mat-icon> Relazione Impiegato-Sede
       </mat-list-item>
-      <mat-list-item (click)="setView('prenotazione-sede')" [class.selected]="currentView === 'prenotazione-sede'"> 
+      <mat-list-item (click)="setView('prenotazione-sede')" [class.selected]="currentView === 'prenotazione-sede'">
         <mat-icon>star</mat-icon> Prenotazione Sede
       </mat-list-item>
       <mat-list-item (click)="setView('')" [class.selected]="currentView === ''"> <!-- da implementare -->
@@ -24,7 +24,7 @@
       <!-- VIEW 1: Lista Impiegati -->
       <div *ngSwitchCase="'impiegati'">
         <div class="divbutton">
-          <button mat-raised-button (click)="openAggModImpForm()" style="background-color:rgb(31, 213, 195);">
+          <button mat-raised-button *ngIf="authService.canWrite()" (click)="openAggModImpForm()"  style="background-color:rgb(31, 213, 195);">
             AGGIUNGI IMPIEGATO
           </button>
         </div>
@@ -98,15 +98,21 @@
                 <td mat-cell *matCellDef="let row"> {{row.ral}}K</td>
               </ng-container>
 
+              <!-- ruolo_id Column -->
+              <ng-container matColumnDef="ruolo_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="ruolo_id">Ruolo ID</th>
+                <td mat-cell *matCellDef="let row"> {{row.ruolo_id}}</td>
+              </ng-container>
+
               <!-- Colonna Azioni -->
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Action</th>
                 <td mat-cell *matCellDef="let row" class="online">
-                  <button mat-icon-button color="primary" (click)="apriModForm(row)">
+                  <button mat-icon-button color="primary" *ngIf="authService.canEdit()" (click)="apriModForm(row)">
                     <mat-icon>edit</mat-icon>
                   </button>
 
-                  <button mat-icon-button color="warn" (click)="eliminaImpiegato(row.id)">
+                  <button mat-icon-button color="warn" *ngIf="authService.canDelete()" (click)="eliminaImpiegato(row.id)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </td>
@@ -126,7 +132,7 @@
         </div>
       </div>
 
-  
+
       <!-- VIEW 2: Relazione Impiegato-Sede -->
       <div *ngSwitchCase="'impiegati-sedi'">
         <div class="main-body">
@@ -157,7 +163,7 @@
                 <td mat-cell *matCellDef="let row"> {{row.cognome}} </td>
               </ng-container>
 
-      
+
 
               <!-- Sede (Visualizza più sedi separate da virgola) -->
               <ng-container matColumnDef="sede">
@@ -185,7 +191,7 @@
       </div>
       <!-- VIEW 3: Prenotazione Sede -->
       <div *ngSwitchCase="'prenotazione-sede'">
-      <app-prenotazione-sede></app-prenotazione-sede>
+        <app-prenotazione-sede></app-prenotazione-sede>
       </div>
 
       <!-- VIEW 4: da implementare-->

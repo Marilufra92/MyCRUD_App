@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ImpiegatoService } from '../services/impiegato.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../core/core.service';
@@ -13,6 +13,8 @@ import { CoreService } from '../core/core.service';
 export class AggModImpComponent implements OnInit {
   impForm: FormGroup;
   impiegati: any[] = [];
+  ruoli: any[] = [];  
+  ufficio: any[] = [];
 
   education: string[] = [
     'Matricola',
@@ -21,7 +23,6 @@ export class AggModImpComponent implements OnInit {
     'Laurea Magistrale',
     'Dottorato',
   ];
-  ufficio: any[] = [];
 
   constructor(
     private _fb: FormBuilder,
@@ -32,15 +33,16 @@ export class AggModImpComponent implements OnInit {
   ) {
     this.impForm = this._fb.group({
       id: 0,
-      nome: '',
-      cognome: '',
-      email: '',
-      datadinascita: '',
-      genere: '',
-      istruzione: '',
-      azienda: '',
-      esperienza: '',
-      ral: 0,
+      nome: ['', Validators.required],
+      cognome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      datadinascita: ['', Validators.required],
+      genere: ['', Validators.required],
+      istruzione: ['', Validators.required],
+      azienda: [''],
+      esperienza: [''],
+      ral: [0],
+      ruolo_id: [null, Validators.required], 
     });
   }
 
@@ -55,34 +57,17 @@ export class AggModImpComponent implements OnInit {
 
     this._impiegatoService.getMenuUffici().subscribe({
       next: (res) => {
-        console.log("Uffici ricevuti:", res);
         this.ufficio = Array.isArray(res.data) ? res.data : [];
       },
       error: (err) => console.error("Errore nel recupero degli uffici:", err)
     });
-  }
 
-  getListaImpiegati() {
-    this._impiegatoService.getListaImpiegatiTot().subscribe((res) => {
-      this.impiegati = Array.isArray(res) ? res : res.data || [];
+    this._impiegatoService.getRuoli().subscribe({
+      next: (res) => {
+        this.ruoli = Array.isArray(res.data) ? res.data : [];
+      },
+      error: (err) => console.error("Errore nel recupero dei ruoli:", err)
     });
-  }
-
-  correctDateForBackend(date: any): string {
-    if (!date) return '';
-    const parsedDate = new Date(date);
-    if (isNaN(parsedDate.getTime())) {
-      console.error("Errore: Data non valida", date);
-      return '';
-    }
-    parsedDate.setMinutes(parsedDate.getMinutes() - parsedDate.getTimezoneOffset());
-    return parsedDate.toISOString().split('T')[0];
-  }
-
-  correctDateForInput(date: string | null): Date | null {
-    if (!date) return null;
-    const parsedDate = new Date(date);
-    return isNaN(parsedDate.getTime()) ? null : parsedDate;
   }
 
   onFormSubmit() {
@@ -92,29 +77,37 @@ export class AggModImpComponent implements OnInit {
         datadinascita: this.correctDateForBackend(this.impForm.value.datadinascita)
       };
 
-      if (this.data) {
-        this._impiegatoService.updateImpiegato(this.data.id, formData).subscribe({
-          next: () => {
-            this._coreService.openSnackBar('Impiegato aggiornato!');
-            this.closeDialogSafely();
-          },
-          error: (err) => console.error(err),
-        });
-      } else {
-        this._impiegatoService.addImpiegato(formData).subscribe({
-          next: () => {
-            this._coreService.openSnackBar('Impiegato aggiunto correttamente!');
-            this.closeDialogSafely();
-          },
-          error: (err) => console.error(err),
-        });
-      }
+      const request = this.data
+        ? this._impiegatoService.updateImpiegato(this.data.id, formData)
+        : this._impiegatoService.addImpiegato(formData);
+
+      request.subscribe({
+        next: () => {
+          this._coreService.openSnackBar(this.data ? 'Impiegato aggiornato!' : 'Impiegato aggiunto correttamente!');
+          this.closeDialogSafely();
+        },
+        error: (err) => console.error(err),
+      });
     }
   }
 
   closeDialogSafely() {
     setTimeout(() => {
       this._dialogRef.close(true);
-    }, 100); // Ritardo per prevenire il problema del focus
+    }, 100);
+  }
+
+  correctDateForBackend(date: any): string {
+    if (!date) return '';
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) return '';
+    parsedDate.setMinutes(parsedDate.getMinutes() - parsedDate.getTimezoneOffset());
+    return parsedDate.toISOString().split('T')[0];
+  }
+
+  correctDateForInput(date: string | null): Date | null {
+    if (!date) return null;
+    const parsedDate = new Date(date);
+    return isNaN(parsedDate.getTime()) ? null : parsedDate;
   }
 }
